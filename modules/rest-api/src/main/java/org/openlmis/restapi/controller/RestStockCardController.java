@@ -100,6 +100,7 @@ public class RestStockCardController extends BaseController {
         if (stockCardService.tryLock(facilityId, entry.getKey(), StockCardLockConstants.UPDATE)) {
           restStockCardService.adjustStockSpilt(facilityId, entry.getValue(), userId);
         } else {
+          logger.info("lock product code {}", entry.getKey());
           errorProductCodes.add(entry.getKey());
         }
       } catch (DataException e) {
@@ -115,6 +116,7 @@ public class RestStockCardController extends BaseController {
         productStockEventMap.put(entry.getKey(), null);
       }
     }
+    logger.info("errorProductCodes {}", errorProductCodes);
     return response("errorProductCodes", errorProductCodes);
   }
 
