@@ -308,7 +308,8 @@ public class RestRequisitionService {
       for (RegimenLineItemForRest regimenLineItemForRest : report.getRegimens()) {
         RegimenCategory regimenCategory = regimenService.queryRegimenCategoryByName(regimenLineItemForRest.getCategoryName());
         regimenLineItemForRest.setCategory(regimenCategory);
-        String code = LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE) == null  ? LmisThreadLocalUtils.STR_VERSION_86: LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE);
+        String versionCodeFromHeader = LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE);
+        String code = versionCodeFromHeader == null || Integer.valueOf(versionCodeFromHeader) < 87  ? LmisThreadLocalUtils.STR_VERSION_86 : LmisThreadLocalUtils.STR_VERSION_87;
         Regimen regimen = null;
         if (MMIA_PROGRAM_CODE.equals(report.getProgramCode())) {
           regimen = regimenService.getRegimensByCategoryIdAndNameAndVersion(regimenCategory.getId(), regimenLineItemForRest.getName(), Long.valueOf(code));
