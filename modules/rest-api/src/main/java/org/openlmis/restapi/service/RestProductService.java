@@ -152,7 +152,8 @@ public class RestProductService {
 
   private List<ProductResponse> prepareProductsBasedOnFacilitySupportedPrograms(List<Product> latestProducts, final List<String> programs) {
     List<ProductResponse> productResponseList = new ArrayList<>();
-
+    String versionCodeFromHeader = LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE);
+    final String versioncode = versionCodeFromHeader == null || Integer.valueOf(versionCodeFromHeader) < 87  ? LmisThreadLocalUtils.STR_VERSION_86 : LmisThreadLocalUtils.STR_VERSION_87;
     for (final Product product : latestProducts) {
       List<ProgramProduct> productPrograms = programProductSevice.getByProductCode(product.getCode());
       List<ProgramProductResponse> programsResponse = FluentIterable.from(productPrograms).filter(new Predicate<ProgramProduct>() {
@@ -164,7 +165,7 @@ public class RestProductService {
         @Override
         public boolean apply(ProgramProduct programProduct) {
           return (!"MMIA".equals(programProduct.getProgram().getCode()) ||
-                  LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE).equals(String.valueOf(programProduct.getVersionCode())));
+                  versioncode.equals(String.valueOf(programProduct.getVersionCode())));
         }
       }).transform(new Function<ProgramProduct, ProgramProductResponse>() {
         @Override
@@ -174,7 +175,7 @@ public class RestProductService {
         }
       }).toList();
 
-      if (!programsResponse.isEmpty() || LmisThreadLocalUtils.STR_VERSION_87.equals(LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE))) {
+      if (!programsResponse.isEmpty() || versioncode.equals(LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE))) {
         productResponseList.add(new ProductResponse(product, programsResponse));
       }
     }
