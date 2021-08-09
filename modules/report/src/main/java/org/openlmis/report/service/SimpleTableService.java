@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openlmis.core.repository.mapper.FacilityMapper;
 import org.openlmis.report.generator.RegionLevel;
 import org.openlmis.report.generator.StockOnHandStatus;
+import org.openlmis.report.mapper.AppInfoMapper;
 import org.openlmis.report.mapper.ProductLotInfoMapper;
 import org.openlmis.report.mapper.RequisitionReportsMapper;
 import org.openlmis.report.mapper.StockOnHandInfoMapper;
@@ -40,6 +41,9 @@ public class SimpleTableService {
 
     @Autowired
     private StockStatusService stockStatusService;
+
+    @Autowired
+    private AppInfoMapper appInfoMapper;
 
     protected static Logger logger = LoggerFactory.getLogger(SimpleTableService.class);
 
@@ -263,5 +267,19 @@ public class SimpleTableService {
 
         facilityIds = facilityMapper.getAllFacilityIds();
         return facilityIds;
+    }
+
+    public List<AppInfo> getAppInfos() {
+        List<AppInfo> appInfos = appInfoMapper.queryAll();
+        return convertAppVersionForV88(appInfos);
+    }
+
+    private List<AppInfo> convertAppVersionForV88(List<AppInfo> appInfos) {
+        for (AppInfo appInfo : appInfos) {
+            if ("1.12.88".equals(appInfo.getAppVersion())) {
+                appInfo.setAppVersion("1.13.87");
+            }
+        }
+        return appInfos;
     }
 }
