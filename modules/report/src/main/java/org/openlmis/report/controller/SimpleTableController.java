@@ -67,9 +67,6 @@ public class SimpleTableController extends BaseController {
     @Autowired
     private SimpleTableService simpleTableService;
 
-    @Autowired
-    private AppInfoMapper appInfoMapper;
-
     @Value("${export.tmp.path}")
     protected String EXPORT_TMP_PATH;
 
@@ -90,7 +87,7 @@ public class SimpleTableController extends BaseController {
 
     @RequestMapping(value = "/app-version-report", method = GET, headers = BaseController.ACCEPT_JSON)
     public ResponseEntity<OpenLmisResponse> appVersionReport() {
-        return OpenLmisResponse.response("app_versions", appInfoMapper.queryAll());
+        return OpenLmisResponse.response("app_versions", simpleTableService.getAppInfos());
     }
 
     @RequestMapping(value = "/export", method = GET, headers = BaseController.ACCEPT_JSON)
