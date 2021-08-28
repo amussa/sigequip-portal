@@ -308,6 +308,9 @@
     <input id="userDisableButton" type="button" class="btn btn-danger delete-button"
            ng-show="user.active && user.id!=null"
            ng-click="showConfirmUserDisableModal()" openlmis-message="button.disable"/>
+    <input id="eraseDeviceInfoButton" type="button" class="btn btn-danger delete-button"
+           ng-show="user.active && user.id!=null && user.isMobileUser"
+           ng-click="showConfirmEraseDeviceInfoModal()" openlmis-message="button.eraseDeviceInfoButton"/>
     <input id="userEnableButton" type="button" class="btn btn-primary enable-button"
            ng-show="(!user.active && user.id!=null)"
            openlmis-message="button.enable"

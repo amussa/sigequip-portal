@@ -64,7 +64,9 @@ services.factory('Users', function ($resource) {
   resource.disable = function (pathParams, success, error) {
     $resource('/users/:id.json', {}, {update: {method: 'DELETE'}}).update(pathParams, {}, success, error);
   };
-
+  resource.eraseDeviceInfo = function (pathParams, success, error) {
+    $resource('/user/eraseDeviceInfo/:facilityId.json', {}, {update: {method: 'POST'}}).update(pathParams, {}, success, error);
+  };
   return resource;
 });
 

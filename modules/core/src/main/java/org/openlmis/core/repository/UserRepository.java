@@ -171,4 +171,8 @@ public class UserRepository {
   public void verify(User user) {
     userMapper.verify(user);
   }
+
+  public int deleteAppInfoByFacilityId(Long facilityId){
+    return userMapper.deleteAppInfoByFacilityId(facilityId);
+  }
 }

@@ -63,6 +63,7 @@
     <intercept-url pattern="/forgot-password*" access="permitAll" requires-channel="any"/>
     <intercept-url pattern="/user/validatePasswordResetToken/*" access="permitAll" requires-channel="any"/>
     <intercept-url pattern="/user/resetPassword/*" access="permitAll" requires-channel="any"/>
+    <intercept-url pattern="/user/eraseDeviceInfo/*" access="permitAll" requires-channel="any"/>
     <intercept-url pattern="/feeds/**" access="permitAll" requires-channel="any"/>
     <intercept-url pattern="/**" access="isAuthenticated()" requires-channel="any"/>
       <intercept-url  pattern="/public/site/**" access="permitAll" requires-channel="any"/>

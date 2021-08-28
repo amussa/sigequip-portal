@@ -58,6 +58,7 @@ public class UserController extends BaseController {
   public static final String TOKEN_VALID = "TOKEN_VALID";
   public static final String USERS = "userList";
   static final String MSG_USER_DISABLE_SUCCESS = "msg.user.disable.success";
+  static final String MSG_ERASE_DEVICEINFO_SUCCESS = "msg.erase.deviceinfo.success";
   static final String USER_CREATED_SUCCESS_MSG = "message.user.created.success.email.sent";
   private static final String RESET_PASSWORD_PATH = "/public/pages/reset-password.html#/token/";
   @Value("${mail.base.url}")
@@ -266,5 +267,11 @@ public class UserController extends BaseController {
   @RequestMapping(value = "/users/supervisory/rights.json", method= GET)
   public ResponseEntity<OpenLmisResponse> getRights(HttpServletRequest request){
     return response("rights", userService.getSupervisoryRights(loggedInUserId(request)));
+  }
+
+  @RequestMapping(value = "/user/eraseDeviceInfo/{facilityId}", method = POST, headers = ACCEPT_JSON)
+  public ResponseEntity<OpenLmisResponse> eraseDeviceInfo(@PathVariable(value = "facilityId") Long facilityId, HttpServletRequest request) {
+    userService.deleteAppInfoByFacilityId(facilityId);
+    return success(MSG_ERASE_DEVICEINFO_SUCCESS);
   }
 }

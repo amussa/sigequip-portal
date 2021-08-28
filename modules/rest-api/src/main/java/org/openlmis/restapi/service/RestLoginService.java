@@ -2,6 +2,8 @@ package org.openlmis.restapi.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
+import org.apache.commons.lang3.StringUtils;
+import org.openlmis.LmisThreadLocalUtils;
 import org.openlmis.authentication.domain.UserToken;
 import org.openlmis.authentication.service.UserAuthenticationService;
 import org.openlmis.core.domain.ProgramSupported;
@@ -11,6 +13,7 @@ import org.openlmis.core.service.FacilityService;
 import org.openlmis.core.service.MessageService;
 import org.openlmis.core.service.ProgramSupportedService;
 import org.openlmis.core.service.UserService;
+import org.openlmis.report.model.dto.AppInfo;
 import org.openlmis.restapi.domain.FacilitySupportedProgram;
 import org.openlmis.restapi.domain.LoginInformation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +35,18 @@ public class RestLoginService {
     private FacilityService facilityService;
     @Autowired
     private ProgramSupportedService programSupportedService;
+    @Autowired
+    private RestAppInfoService restAppInfoService;
 
     public LoginInformation login(String username, String password) {
         authenticateUser(username, password);
-        return getLoginInformation(username);
+        LoginInformation loginInformation = getLoginInformation(username);
+        String uniqueId = LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_UNIQUE_ID);
+        AppInfo appInfo = restAppInfoService.searchAppInfoByFacilityId(loginInformation.getFacilityId());
+        if(appInfo != null && !StringUtils.equals(uniqueId, appInfo.getUniqueId())){
+            throw new DataException("One facility can only sign in on one device. Your facility has signed in on another device.");
+        }
+        return loginInformation;
     }
 
     private UserToken authenticateUser(String username, String password) {

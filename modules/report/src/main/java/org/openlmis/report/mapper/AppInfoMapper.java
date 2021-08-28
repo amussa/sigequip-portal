@@ -9,11 +9,13 @@
  */
 package org.openlmis.report.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.openlmis.core.domain.ELMISInterfaceFacilityMapping;
 import org.openlmis.report.model.dto.AppInfo;
 import org.springframework.stereotype.Repository;
 
@@ -42,4 +44,7 @@ public interface AppInfoMapper {
 
     @Update("UPDATE moz_app_info SET androidVersion = #{androidVersion}, deviceInfo = #{deviceInfo}, uniqueId = #{uniqueId} WHERE id = #{id}")
     int updateInfo(AppInfo appInfo);
+
+    @Delete("Delete from moz_app_info where facilityId = #{facilityId}")
+    int deleteAppInfoByFacilityId(@Param("facilityId") Long facilityId);
 }

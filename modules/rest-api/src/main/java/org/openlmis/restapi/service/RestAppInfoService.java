@@ -74,4 +74,8 @@ public class RestAppInfoService {
         }
         return updateStatus;
     }
+
+    public AppInfo searchAppInfoByFacilityId(Long facilityId){
+        return appInfoRepository.getAppInfoByFacilityId(facilityId);
+    }
 }
