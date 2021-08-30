@@ -259,7 +259,6 @@ describe("User", function () {
     });
 
     it('should erase device info a user if Admin clicks OK in erase device info confirm modal', function () {
-      user.isMobileUser = true;
       httpBackend.expectPOST('/user/eraseDeviceInfo.json').respond(200, {"success": "msg.erase.deviceinfo.success"});
 
       spyOn(messageService, 'get').andCallFake(function () {
