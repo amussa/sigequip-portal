@@ -48,6 +48,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -86,7 +87,7 @@ public class RestLoginServiceTest {
     createLoginInformation();
     AppInfo appInfo = new AppInfo();
     appInfo.setUniqueId(uniqueId);
-    when(restAppInfoService.searchAppInfoByFacilityId(any())).thenReturn(appInfo);
+    when(restAppInfoService.searchAppInfoByFacilityId(anyLong())).thenReturn(appInfo);
 
     LoginInformation loginInformation = restLoginService.login("username", "password");
     assertEquals("username", loginInformation.getUserName());
@@ -102,7 +103,7 @@ public class RestLoginServiceTest {
     createLoginInformation();
     AppInfo appInfo = new AppInfo();
     appInfo.setUniqueId("test");
-    when(restAppInfoService.searchAppInfoByFacilityId(any())).thenReturn(appInfo);
+    when(restAppInfoService.searchAppInfoByFacilityId(anyLong())).thenReturn(appInfo);
     expectedException.expect(DataException.class);
     restLoginService.login("username", "password");
   }
