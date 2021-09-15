@@ -172,7 +172,7 @@ public class UserRepository {
     userMapper.verify(user);
   }
 
-  public int deleteAppInfoByFacilityId(Long facilityId){
-    return userMapper.deleteAppInfoByFacilityId(facilityId);
+  public int updateAppInfoByFacilityId(Long facilityId){
+    return userMapper.updateAppInfoByFacilityId(facilityId);
   }
 }

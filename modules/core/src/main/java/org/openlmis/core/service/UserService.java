@@ -243,7 +243,7 @@ public class UserService {
     return userRepository.getSupervisoryRights(userId);
   }
 
-  public int deleteAppInfoByFacilityId(Long facilityId){
-    return userRepository.deleteAppInfoByFacilityId(facilityId);
+  public int updateAppInfoByFacilityId(Long facilityId){
+    return userRepository.updateAppInfoByFacilityId(facilityId);
   }
 }

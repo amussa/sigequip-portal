@@ -146,6 +146,6 @@ public interface UserMapper {
   @Update("UPDATE users SET verified = TRUE WHERE id = #{id}")
   void verify(User user);
 
-  @Delete("Delete from moz_app_info where facilityId = #{facilityId}")
-  int deleteAppInfoByFacilityId(@Param("facilityId") Long facilityId);
+  @Update("update moz_app_info set uniqueid = null where facilityId = #{facilityId}")
+  int updateAppInfoByFacilityId(@Param("facilityId") Long facilityId);
 }

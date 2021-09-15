@@ -271,7 +271,7 @@ public class UserController extends BaseController {
 
   @RequestMapping(value = "/user/eraseDeviceInfo/{facilityId}", method = POST, headers = ACCEPT_JSON)
   public ResponseEntity<OpenLmisResponse> eraseDeviceInfo(@PathVariable(value = "facilityId") Long facilityId, HttpServletRequest request) {
-    userService.deleteAppInfoByFacilityId(facilityId);
+    userService.updateAppInfoByFacilityId(facilityId);
     return success(MSG_ERASE_DEVICEINFO_SUCCESS);
   }
 }
