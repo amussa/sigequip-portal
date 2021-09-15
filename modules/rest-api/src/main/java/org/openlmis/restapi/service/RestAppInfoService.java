@@ -36,7 +36,7 @@ public class RestAppInfoService {
         versionCodeMap.put("85", "1.12.85");
         versionCodeMap.put("86", "1.12.86");
         versionCodeMap.put("87", "1.12.87");
-        versionCodeMap.put("88", "1.12.88");
+        versionCodeMap.put("88", "1.13.87");
         versionCodeMap.put("89", "1.12.89");
 
     }
