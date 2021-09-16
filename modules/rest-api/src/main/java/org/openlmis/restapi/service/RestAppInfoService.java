@@ -48,11 +48,6 @@ public class RestAppInfoService {
     @Autowired
     FacilityHistoryMapper facilityHistoryMapper;
 
-    private int getAppVersionUpdateStatus(String oldAppVersion, String currentVersionCode) {
-        String oldVersionCode = oldAppVersion.substring(oldAppVersion.lastIndexOf(".") + 1);
-        return Integer.compare(Integer.parseInt(currentVersionCode), Integer.parseInt(oldVersionCode));
-    }
-
     @Transactional
     public int insertOrUpdateAppInfo(RestAppInfoRequest appInfoRequest) {
         appInfoRequest.setAppVersion(versionCodeMap.get(appInfoRequest.getVersionCode()));
@@ -62,9 +57,8 @@ public class RestAppInfoService {
             BeanUtils.copyProperties(appInfoRequest, appInfo);
             return appInfoRepository.insert(appInfo);
         }
-        int updateStatus = getAppVersionUpdateStatus(appInfo.getAppVersion(),
-            appInfoRequest.getVersionCode());
-        if (updateStatus == 1) {
+        int updateStatus = versionCompare(versionCodeMap.get(appInfoRequest.getVersionCode()),appInfo.getAppVersion());
+        if (updateStatus > 0) {
             appInfoRepository.updateAppVersion(appInfo.getFacilityId(), appInfoRequest.getAppVersion());
         }
         if (!StringUtils.equals(appInfoRequest.getUniqueId(), appInfo.getUniqueId())) {
@@ -77,5 +71,25 @@ public class RestAppInfoService {
 
     public AppInfo searchAppInfoByFacilityId(Long facilityId){
         return appInfoRepository.getAppInfoByFacilityId(facilityId);
+    }
+
+    private static int versionCompare(String currentVersionCode, String oldVersionCode) {
+        String[] versionArr1 = currentVersionCode.split("\\.");
+        String[] versionArr2 = oldVersionCode.split("\\.");
+        int minLen = Math.min(versionArr1.length, versionArr2.length);
+        int diff = 0;
+        for (int i = 0; i < minLen; i++) {
+            String v1 = versionArr1[i];
+            String v2 = versionArr2[i];
+            diff = v1.length() - v2.length();
+            if (diff == 0) {
+                diff = v1.compareTo(v2);
+            }
+            if (diff != 0) {
+                break;
+            }
+        }
+        diff = (diff != 0) ? diff : (versionArr1.length - versionArr2.length);
+        return diff;
     }
 }
