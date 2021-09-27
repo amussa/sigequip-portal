@@ -66,7 +66,11 @@ public class SimpleTableService {
 
     public List<StockProductDto> getStockProductData(StockReportParam filterCriteria) {
         List<StockProductDto> stockProducts = new ArrayList<>();
+        long t1 = System.currentTimeMillis();
         List<ProductLotInfo> productLotInfos = productLotInfoMapper.getProductLotInfoList(filterCriteria);
+        long t2 = System.currentTimeMillis();
+        logger.info("-----1:"+(t2-t1));
+
         if (CollectionUtils.isEmpty(productLotInfos)) {
             return stockProducts;
         }
@@ -74,10 +78,23 @@ public class SimpleTableService {
         Map<String, StockProductDto> stockProductDtoMap
                 = filterCriteria.getRegion() == RegionLevel.DISTRICT
                 ? stockProductGroupByDistrict(productLotInfos) : stockProductGroupByFacility(productLotInfos);
+        long t3 = System.currentTimeMillis();
+        logger.info("-----2:"+(t3-t2));
+
         filterZeroSohLot(stockProductDtoMap);
+        long t4 = System.currentTimeMillis();
+        logger.info("-----3:"+(t4-t3));
+
+
         Map<String, CMMEntry> cmmEntryMap = getProductCmmMap(filterCriteria);
+        long t5 = System.currentTimeMillis();
+        logger.info("-----4:"+(t5-t4));
+
 
         Map<String, Integer> sohMap = sohMap(stockOnHandInfoMapper.getStockOnHandInfoList(filterCriteria));
+        long t6 = System.currentTimeMillis();
+        logger.info("-----5:"+(t6-t5));
+
         StockProductDto stockProduct;
         for (Map.Entry<String, StockProductDto> entry : stockProductDtoMap.entrySet()) {
             stockProduct = entry.getValue();
@@ -87,6 +104,9 @@ public class SimpleTableService {
                 stockProducts.add(stockProduct);
             }
         }
+        long t7 = System.currentTimeMillis();
+        logger.info("-----6:"+(t7-t6));
+
         return stockProducts;
     }
 
