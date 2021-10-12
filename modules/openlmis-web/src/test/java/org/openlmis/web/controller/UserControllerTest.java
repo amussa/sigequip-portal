@@ -302,4 +302,16 @@ public class UserControllerTest {
     assertThat(successMsg, is(UserController.MSG_USER_DISABLE_SUCCESS));
     verify(userService).disable(userId, modifiedBy);
   }
+
+  @Test
+  public void shouldEraseDeviceInfo(){
+    Long facilityId = 123L;
+    when(userService.updateAppInfoByFacilityId(facilityId)).thenReturn(1);
+
+    ResponseEntity<OpenLmisResponse> response = userController.eraseDeviceInfo(facilityId,request);
+    String successMsg = response.getBody().getSuccessMsg();
+
+    assertThat(successMsg, is(UserController.MSG_ERASE_DEVICEINFO_SUCCESS));
+    verify(userService).updateAppInfoByFacilityId(facilityId);
+  }
 }

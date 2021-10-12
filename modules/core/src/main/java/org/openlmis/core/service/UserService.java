@@ -242,4 +242,8 @@ public class UserService {
   public List<String> getSupervisoryRights(Long userId) {
     return userRepository.getSupervisoryRights(userId);
   }
+
+  public int updateAppInfoByFacilityId(Long facilityId){
+    return userRepository.updateAppInfoByFacilityId(facilityId);
+  }
 }

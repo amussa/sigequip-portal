@@ -43,6 +43,7 @@ public class RestAppInfoServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        service.init();
     }
 
     @Test

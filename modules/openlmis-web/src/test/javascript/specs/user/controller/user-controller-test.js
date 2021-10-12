@@ -248,6 +248,30 @@ describe("User", function () {
       expect(scope.user).toEqual(user);
     });
 
+    it('should show confirm modal when Admin clicks Erase device info', function () {
+      spyOn(OpenLmisDialog, 'newDialog');
+      spyOn(messageService, 'get');
+      httpBackend.expectGET('/public/pages/template/dialog/dialogbox.html').respond(200);
+
+      scope.showConfirmEraseDeviceInfoModal();
+
+      expect(OpenLmisDialog.newDialog).toHaveBeenCalled();
+    });
+
+    it('should erase device info a user if Admin clicks OK in erase device info confirm modal', function () {
+      httpBackend.expectPOST('/user/eraseDeviceInfo.json').respond(200, {"success": "msg.erase.deviceinfo.success"});
+
+      spyOn(messageService, 'get').andCallFake(function () {
+        return "Device info has been erased";
+      });
+      scope.eraseDeviceInfoCallback(true);
+      httpBackend.flush();
+      expect(scope.message).toEqual("Device info has been erased");
+      expect(scope.error).toEqual("");
+      expect(scope.showError).toEqual("false");
+      expect(scope.user).toEqual(user);
+    });
+
     it('should show confirm modal when Admin clicks Restore', function () {
       spyOn(OpenLmisDialog, 'newDialog');
       spyOn(messageService, 'get');

@@ -55,6 +55,9 @@ public class UserPage extends FilterSearchPage {
   @FindBy(how = ID, using = "userEnableButton")
   private static WebElement enableButton = null;
 
+  @FindBy(how = ID, using = "eraseDeviceInfoButton")
+  private static WebElement eraseDeviceInfoButton = null;
+
   @FindBy(how = ID, using = "searchUser")
   private static WebElement searchUserTextField = null;
 

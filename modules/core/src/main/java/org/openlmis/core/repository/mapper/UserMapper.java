@@ -145,4 +145,7 @@ public interface UserMapper {
 
   @Update("UPDATE users SET verified = TRUE WHERE id = #{id}")
   void verify(User user);
+
+  @Update("update moz_app_info set uniqueid = null where facilityId = #{facilityId}")
+  int updateAppInfoByFacilityId(@Param("facilityId") Long facilityId);
 }

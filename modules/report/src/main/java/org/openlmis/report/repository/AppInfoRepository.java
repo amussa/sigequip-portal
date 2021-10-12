@@ -35,4 +35,8 @@ public class AppInfoRepository {
     public int updateInfo(AppInfo appInfo) {
         return appInfoMapper.updateInfo(appInfo);
     }
+
+    public int deleteAppInfoByFacilityId(Long facilityId){
+        return appInfoMapper.deleteAppInfoByFacilityId(facilityId);
+    }
 }

@@ -52,21 +52,25 @@ describe("consumption report controller", function () {
   it('should export all the date from report', function () {
     var expectedHeader = getExpectedHeaders();
 
-    scope.consumptionInPeriods = [{
+    scope.consumptionInPeriodsExport = [[{
       cmm: null,
       cmm_sum: null,
       occurrences: 0,
       period: 'Mar 2017-Apr 2017',
+      'facility.facility_name': 'CS Manhangane',
+      'facility.facility_code': 'HF934',
+      entries: 1,
       soh: 4,
       soh_sum: 4,
       total_quantity: 0,
       total_quantity_sum: 0
-    }];
+    }]];
 
     scope.reportParams = {
       startTime: '2017-04-21T00:00:00.000000',
       endTime: '2017-07-20T00:00:00.000000',
       selectedProvince: {name: 'Maputo Província'},
+      selectedDistrict: {name: 'Distrito da Matola'},
       productCode: '08S01Z'
     };
 
@@ -78,10 +82,11 @@ describe("consumption report controller", function () {
       drugCode: '08S01Z',
       drugName: 'Paracetamol120mg/5mLXarope',
       province: 'Maputo Província',
-      district: '[All]',
-      facility: '[All]',
+      district: 'Distrito da Matola',
+      facility: 'CS Manhangane',
+      entries: 1,
       period: 'Mar 2017-Apr 2017',
-      cmm: '',
+      cmm: 0,
       consumption: 0,
       soh: 4,
       reportGeneratedFor: '21-04-2017 - 20-07-2017'

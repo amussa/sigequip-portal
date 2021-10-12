@@ -228,6 +228,25 @@ function UserController($scope, $location, $dialog, Users, Facility, messageServ
     $scope.user.active = false;
   };
 
+  $scope.showConfirmEraseDeviceInfoModal = function () {
+    var dialogOpts = {
+      id: "eraseDeviceInfoDialog",
+      header: 'erase.deviceInfo.header',
+      body: 'erase.deviceInfo.confirm'
+    };
+    OpenLmisDialog.newDialog(dialogOpts, $scope.eraseDeviceInfoCallback, $dialog);
+  };
+
+  $scope.eraseDeviceInfoCallback = function (result) {
+    if (!result) return;
+    Users.eraseDeviceInfo({facilityId: $scope.user.facilityId}, eraseDeviceInfoSuccessFunc, errorFunc);
+  };
+
+  var eraseDeviceInfoSuccessFunc = function (data) {
+    clearErrorAndSetMessage(data.success);
+    $scope.user = originalUser;
+  };
+
   $scope.showConfirmUserRestoreModal = function () {
     var dialogOpts = {
       id: "restoreUserDialog",
