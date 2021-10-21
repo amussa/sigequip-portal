@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW vw_period_movements_before_20210901
+CREATE MATERIALIZED VIEW vw_period_movements_before_20210721
 TABLESPACE pg_default
 AS
 select uuid_in(md5(CONCAT(facility_code,periodstart,drug_code,reason_code)::text)::cstring) AS uuid,
@@ -35,7 +35,7 @@ from
             processing_periods.enddate AS periodend,
             existing_card_ids_in_period(processing_periods.enddate) AS stockcardid
            FROM processing_periods
-          WHERE processing_periods.startdate < '2021-09-01 00:00:00'::timestamp without time zone) cardidsinperiods
+          WHERE processing_periods.startdate < '2021-07-21 00:00:00'::timestamp without time zone) cardidsinperiods
      JOIN stock_cards ON cardidsinperiods.stockcardid = stock_cards.id
      JOIN facilities ON stock_cards.facilityid = facilities.id
      JOIN products ON stock_cards.productid = products.id
@@ -44,16 +44,16 @@ from
 WITH NO DATA;
 
 -- View indexes:
-CREATE UNIQUE INDEX idx_vw_period_movements_before_20210901 ON vw_period_movements_before_20210901(uuid);
-CREATE INDEX idx_vw_period_movements_before_20210901_drug_prc_dtc_fcc ON vw_period_movements_before_20210901(drug_code text_ops,province_code text_ops, district_code text_ops, facility_code text_ops);
+CREATE UNIQUE INDEX idx_vw_period_movements_before_20210721 ON vw_period_movements_before_20210721(uuid);
+CREATE INDEX idx_vw_period_movements_before_20210721_drug_prc_dtc_fcc ON vw_period_movements_before_20210721(drug_code text_ops,province_code text_ops, district_code text_ops, facility_code text_ops);
 
 
 
 -- Create refresh functions
-CREATE OR REPLACE FUNCTION refresh_period_movements_before_20210901()
+CREATE OR REPLACE FUNCTION refresh_period_movements_before_20210721()
   RETURNS INT LANGUAGE plpgsql
 AS $$
 BEGIN
-  REFRESH MATERIALIZED VIEW CONCURRENTLY vw_period_movements_before_20210901;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY vw_period_movements_before_20210721;
   RETURN 1;
 END $$;

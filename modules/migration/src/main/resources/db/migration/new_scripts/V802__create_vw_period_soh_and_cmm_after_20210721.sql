@@ -1,6 +1,6 @@
-DROP MATERIALIZED VIEW IF EXISTS vw_period_soh_and_cmm_after_20210901;
+DROP MATERIALIZED VIEW IF EXISTS vw_period_soh_and_cmm_after_20210721;
 
-CREATE materialized view vw_period_soh_and_cmm_after_20210901 AS
+CREATE materialized view vw_period_soh_and_cmm_after_20210721 AS
 SELECT stock_cards.id AS stockcardid,
    cardidsinperiods.periodstart,
    cardidsinperiods.periodend,
@@ -18,7 +18,7 @@ FROM (SELECT processing_periods.startdate AS periodstart,
          processing_periods.enddate AS periodend,
          existing_card_ids_in_period(processing_periods.enddate) AS stockcardid
   FROM processing_periods
-  WHERE processing_periods.startdate >= '2021-09-01 00:00:00'::timestamp without time zone) cardidsinperiods
+  WHERE processing_periods.startdate >= '2021-07-21 00:00:00'::timestamp without time zone) cardidsinperiods
      JOIN stock_cards ON cardidsinperiods.stockcardid = stock_cards.id
      JOIN facilities ON stock_cards.facilityid = facilities.id
      JOIN products ON stock_cards.productid = products.id
@@ -27,10 +27,10 @@ FROM (SELECT processing_periods.startdate AS periodstart,
 WITH NO DATA;
 
 -- Create refresh functions
-CREATE OR REPLACE FUNCTION refresh_period_soh_and_cmm_after_20210901()
+CREATE OR REPLACE FUNCTION refresh_period_soh_and_cmm_after_20210721()
   RETURNS INT LANGUAGE plpgsql
 AS $$
 BEGIN
-  REFRESH MATERIALIZED VIEW vw_period_soh_and_cmm_after_20210901;
+  REFRESH MATERIALIZED VIEW vw_period_soh_and_cmm_after_20210721;
 RETURN 1;
 END $$;
