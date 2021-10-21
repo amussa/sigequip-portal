@@ -130,23 +130,23 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
 
   function getExpiryDateReportsParams() {
     var params = {};
-    var dividingDateTime = new Date('2020-05-31').setHours(23, 59, 59, 999);
+    var dividingDateTime = new Date('2021-10-01').setHours(23, 59, 59, 999);
     var selectedTime = new Date($scope.reportParams.endTime).setHours(23, 59, 59, 999);
     params.combineMvs=[];
-    if (selectedTime < dividingDateTime ) {
+    if (selectedTime <= dividingDateTime ) {
       params.combineMvs.push({
         endTime:selectedTime,
-        mv:"vw_lot_expiry_dates_before_20200531"
+        mv:"vw_lot_expiry_dates_before_20211001"
       });
     } else { // combine
       params.combineMvs.push(
           {
             endTime: dividingDateTime,
-            mv: "vw_lot_expiry_dates_before_20200531"
+            mv: "vw_lot_expiry_dates_before_20211001"
           },
           {
             endTime: selectedTime,
-            mv: "vw_lot_expiry_dates_after_20200531"
+            mv: "vw_lot_expiry_dates_after_20211001"
           }
       );
     }
