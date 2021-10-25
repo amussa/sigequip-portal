@@ -82,6 +82,10 @@ services.factory('ProgramsToViewRequisitions', function ($resource) {
   return $resource('/facility/:facilityId/view/requisition/programs.json', {}, {});
 });
 
+services.factory('EntryLotOnHands', function ($resource) {
+  return $resource('/reports/entryLotOnHands.json', {}, {});
+});
+
 services.factory('ProgramSupportedByFacility', function ($resource) {
   return $resource('/facilities/:facilityId/programs.json', {}, {});
 });

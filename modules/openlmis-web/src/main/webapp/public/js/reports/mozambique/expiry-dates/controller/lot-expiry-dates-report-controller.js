@@ -1,4 +1,4 @@
-function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGenerateUrlService, messageService, CubesGenerateCutParamsService, $routeParams, DateFormatService, ReportExportExcelService) {
+function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGenerateUrlService, messageService, CubesGenerateCutParamsService, $routeParams, DateFormatService, ReportExportExcelService, EntryLotOnHands) {
   $controller('BaseProductReportController', {$scope: $scope});
 
   $scope.populateOptions = function () {
@@ -31,18 +31,23 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
   };
 
   function queryLotExpiryDatesReportDataFromCubes() {
-    var params = getExpiryDateReportsParams();
-    var promises = _.map(params.combineMvs,function (item) {
-      var cutsParams = CubesGenerateCutParamsService.generateCutsParams('occurred',undefined, item.endTime, params.selectedFacility, undefined, params.selectedProvince, params.selectedDistrict);
-      return $http.get(CubesGenerateUrlService.generateFactsUrl(item.mv, cutsParams))
-          .then(function (data) {
-            return data;
-          });
-    });
-
-    $q.all(promises).then( function (lotDatas) {
-        generateReportData(Object.values(_.pluck(lotDatas,'data')).flat());
-    });
+    var selectedTime = new Date($scope.reportParams.endTime).setHours(23, 59, 59, 999);
+    var provinceId = null;
+    if ($scope.expiryDatesReportParams.selectedProvince) {
+      provinceId = $scope.expiryDatesReportParams.selectedProvince.id;
+    }
+    var districtId = null;
+    if ($scope.expiryDatesReportParams.selectedDistrict) {
+      districtId = $scope.expiryDatesReportParams.selectedDistrict.id;
+    }
+    var facilityId = null;
+    if ($scope.expiryDatesReportParams.selectedFacility) {
+      facilityId = $scope.expiryDatesReportParams.selectedFacility.id;
+    }
+    EntryLotOnHands.get({occurred:selectedTime, provinceId: provinceId,
+      districtId: districtId, facilityId: facilityId}, function (loadData) {
+      generateReportData(Object.values(_.pluck(loadData,'data')).flat());
+    })
   }
 
   function generateReportData(data) {
