@@ -44,10 +44,9 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
     if ($scope.expiryDatesReportParams.selectedFacility) {
       facilityId = $scope.expiryDatesReportParams.selectedFacility.id;
     }
-    EntryLotOnHands.get({occurred:selectedTime, provinceId: provinceId,
-      districtId: districtId, facilityId: facilityId}, function (loadData) {
+    EntryLotOnHands.get({occurred:selectedTime,"provinceId":provinceId,"districtId":districtId,"facilityId":facilityId},function(loadData){
       generateReportData(loadData.data);
-    })
+    });
   }
 
   function generateReportData(data) {
