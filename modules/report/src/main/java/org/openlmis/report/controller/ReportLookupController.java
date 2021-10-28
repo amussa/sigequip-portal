@@ -590,4 +590,15 @@ public class ReportLookupController extends BaseController {
         return OpenLmisResponse.response("data", model);
     }
 
+  @RequestMapping(value = "/entryLotOnHands.json", method = GET, headers = BaseController.ACCEPT_JSON)
+  public ResponseEntity<OpenLmisResponse> getEntryLotOnHands(@RequestParam("occurred") Long occurred,
+      @RequestParam(value = "provinceId", required = false) Integer provinceId,
+      @RequestParam(value = "districtId", required = false) Integer districtId,
+      @RequestParam(value = "facilityId", required = false) Integer facilityId,
+      HttpServletRequest request) {
+    List<LotExpiryByFacilityDto> lotExpiryByFacilityDtos = reportLookupService
+        .getLotExpiryByFacilityData(occurred,provinceId,districtId,facilityId);
+    return OpenLmisResponse.response("data", lotExpiryByFacilityDtos);
+  }
+
 }

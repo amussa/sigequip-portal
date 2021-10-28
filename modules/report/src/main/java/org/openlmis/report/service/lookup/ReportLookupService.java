@@ -140,6 +140,9 @@ public class ReportLookupService {
     private EquipmentReportMapper equipmentReportMapper;
 
     @Autowired
+    private LotExpiryDateByFacilityMapper lotExpiryDateByFacilityMapper;
+
+    @Autowired
     private DonorRepository donorRepository;
 
     @Autowired
@@ -772,6 +775,12 @@ public class ReportLookupService {
 
         return treeList;
 
+    }
+
+
+    public List<LotExpiryByFacilityDto> getLotExpiryByFacilityData(Long occurred,Integer provinceId,
+        Integer districtId,Integer facilityId) {
+        return lotExpiryDateByFacilityMapper.getLotExpiryByFacilityData(occurred,provinceId,districtId,facilityId);
     }
 
 //End new

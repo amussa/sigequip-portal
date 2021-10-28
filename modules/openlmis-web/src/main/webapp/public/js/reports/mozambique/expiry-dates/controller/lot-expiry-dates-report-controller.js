@@ -46,7 +46,7 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
     }
     EntryLotOnHands.get({occurred:selectedTime, provinceId: provinceId,
       districtId: districtId, facilityId: facilityId}, function (loadData) {
-      generateReportData(Object.values(_.pluck(loadData,'data')).flat());
+      generateReportData(loadData.data);
     })
   }
 
@@ -55,7 +55,7 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
 
     var drugHash = {};
 
-    _.forEach(_.groupBy(data, 'facility.facility_code'), function (item) {
+    _.forEach(_.groupBy(data, 'facilityCode'), function (item) {
       var expiryDatesForTheFacility = getExpiryDatesBeforeOccurredForFacility(item);
 
       _.forEach(expiryDatesForTheFacility, function (expiryDateItem, drugCode) {
@@ -107,27 +107,25 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
     _.forEach(dataForOneFacility, function (item) {
       var createdDate = item.createddate;
       var occurredDate = item.occurred;
-      var drugCode = item['drug.drug_code'];
+      var drugCode = item.drugCode;
 
       if (drugOccurredHash[drugCode]) {
-        if (drugOccurredHash[drugCode].lot_expiry_dates[item.lot_number + " - " + item.expiry_date] === undefined || ((occurredDate === drugOccurredHash[drugCode].occurred_date && createdDate >= drugOccurredHash[drugCode].createddate) || occurredDate > drugOccurredHash[drugCode].occurred_date)) {
           drugOccurredHash[drugCode].occurred_date = occurredDate;
           drugOccurredHash[drugCode].createddate = createdDate;
-          drugOccurredHash[drugCode].lot_expiry_dates[item.lot_number + " - " + item.expiry_date] = item.lotonhand;
-        }
+          drugOccurredHash[drugCode].lot_expiry_dates[item.lotNumber + " - " + item.expiryDate] = item.lotonhand;
       } else {
         drugOccurredHash[drugCode] = {
           code: drugCode,
-          name: item['drug.drug_name'],
+          name: item.drugName,
           createddate: createdDate,
           occurred_date: occurredDate,
           lot_expiry_dates: {},
-          facility_code: item['facility.facility_code'],
-          province_name: item['location.province_name'],
-          facility_name: item['facility.facility_name'],
-          district_name: item['location.district_name']
+          facility_code: item.facilityCode,
+          province_name: item.provinceName,
+          facility_name: item.facilityName,
+          district_name: item.districtName
         };
-        drugOccurredHash[drugCode].lot_expiry_dates[item.lot_number + " - " + item.expiry_date] = item.lotonhand;
+        drugOccurredHash[drugCode].lot_expiry_dates[item.lotNumber + " - " + item.expiryDate] = item.lotonhand;
       }
     });
     return drugOccurredHash;
