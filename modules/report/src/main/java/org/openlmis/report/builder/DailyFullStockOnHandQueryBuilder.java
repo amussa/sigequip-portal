@@ -29,7 +29,7 @@ public class DailyFullStockOnHandQueryBuilder {
     SELECT(
         "stock_cards.facilityid as facilityId, products.code as productCode,stock_card_entries_soh.valuecolumn as soh, stock_card_entries_soh.occurred");
     SELECT(
-        "row_number() over (partition by stock_card_entries_soh.stockcardid order by stock_card_entries_soh.occurred desc) rank");
+        "row_number() over (partition by stock_card_entries_soh.stockcardid order by stock_card_entries_soh.createddate desc) rank");
     FROM("stock_card_entries_soh");
     JOIN("stock_cards ON stock_card_entries_soh.stockcardid = stock_cards.id");
     JOIN("products ON stock_cards.productid = products.id");
