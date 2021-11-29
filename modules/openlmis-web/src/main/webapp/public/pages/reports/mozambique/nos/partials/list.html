@@ -36,6 +36,7 @@
                 </option>
             </select>
         </div>
+        <span class="field-error" style="margin-left: 8%" ng-show="noProductSelected" openlmis-message="report.missing.product"></span>
         <div id="tracer-report"></div>
         <div ng-show="buttonDisplay" style="margin-top: 40px; height: 350px">
             <div ng-include="'/public/pages/reports/mozambique/export-drug-selection.html'"></div>

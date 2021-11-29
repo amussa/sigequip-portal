@@ -2,11 +2,12 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
   $controller('BaseProductReportController', {$scope: $scope});
   var SELECTION_CHECKBOX_NOT_SELECT_STYLES = 'selection-checkbox__not-select';
   var SELECTION_CHECKBOX_ALL_STYLES = 'selection-checkbox__all';
-  $scope.reportLoaded = false;
+  $scope.reportLoaded = true;
   $scope.selectedDrugCode = '';
   $scope.buttonDisplay = false;
   $scope.showDrugList = false;
   $scope.selectedAll = false;
+  $scope.noProductSelected = false;
   $scope.selectedDrugAllClass = SELECTION_CHECKBOX_NOT_SELECT_STYLES;
   $scope.selectedDrugNames = [];
   $scope.selectedDrugs = [];
@@ -24,7 +25,7 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
   }
 
   $scope.loadReport = function () {
-    if ($scope.validateProvince() && $scope.validateDistrict()) {
+    if ($scope.validateProvince() && $scope.validateDistrict() && validateProduct()) {
       getReportLoaded();
     }
   };
@@ -99,4 +100,9 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
   function getSelectedDistrict() {
     return $scope.getGeographicZoneById($scope.districts, $scope.reportParams.districtId);
   }
+
+    function validateProduct() {
+      $scope.noProductSelected = $scope.selectedDrugCode == '';
+      return !$scope.noProductSelected;
+    }
 }

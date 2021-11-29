@@ -2,7 +2,8 @@ function TracerDrugsReportController($scope, $controller, TracerDrugsChartServic
   $controller('BaseProductReportController', {$scope: $scope});
   var SELECTION_CHECKBOX_NOT_SELECT_STYLES = 'selection-checkbox__not-select';
   var SELECTION_CHECKBOX_ALL_STYLES = 'selection-checkbox__all';
-  $scope.reportLoaded = false;
+  $scope.reportLoaded = true;
+  $scope.noProductSelected = false;
   $scope.selectedDrugCode = '';
   $scope.buttonDisplay = false;
   $scope.showDrugList = false;
@@ -15,7 +16,7 @@ function TracerDrugsReportController($scope, $controller, TracerDrugsChartServic
   init();
 
   $scope.loadReport = function () {
-    if ($scope.validateProvince() && $scope.validateDistrict()) {
+    if ($scope.validateProvince() && $scope.validateDistrict() && validateProduct()) {
       getReportLoaded();
     }
   };
@@ -92,7 +93,6 @@ function TracerDrugsReportController($scope, $controller, TracerDrugsChartServic
     tracerDrugListPromis.then(function (tracerDrugListResult) {
       $scope.drugList = tracerDrugListResult.data;
       $scope.buttonDisplay = tracerDrugListResult.data.length > 0;
-      $scope.selectedDrugCode = tracerDrugListResult.data[0]['drug.drug_code'];
     });
   }
 
@@ -102,5 +102,10 @@ function TracerDrugsReportController($scope, $controller, TracerDrugsChartServic
 
   function getSelectedDistrict() {
     return $scope.getGeographicZoneById($scope.districts, $scope.reportParams.districtId);
+  }
+
+  function validateProduct() {
+    $scope.noProductSelected = $scope.selectedDrugCode == '';
+    return !$scope.noProductSelected;
   }
 }
