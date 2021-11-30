@@ -105,7 +105,7 @@ function TracerDrugsReportController($scope, $controller, TracerDrugsChartServic
   }
 
   function validateProduct() {
-    $scope.noProductSelected = $scope.selectedDrugCode == '';
+    $scope.noProductSelected = $scope.selectedDrugCode === '';
     return !$scope.noProductSelected;
   }
 }

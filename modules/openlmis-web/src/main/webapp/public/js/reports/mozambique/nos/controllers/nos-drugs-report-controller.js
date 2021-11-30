@@ -89,7 +89,6 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
     nosDrugListPromis.then(function (nosDrugListResult) {
       $scope.drugList = nosDrugListResult.data;
       $scope.buttonDisplay = nosDrugListResult.data.length > 0;
-      $scope.selectedDrugCode = nosDrugListResult.data[0]['drug.drug_code'];
     });
   }
 
@@ -102,7 +101,7 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
   }
 
     function validateProduct() {
-      $scope.noProductSelected = $scope.selectedDrugCode == '';
+      $scope.noProductSelected = $scope.selectedDrugCode === '';
       return !$scope.noProductSelected;
     }
 }
