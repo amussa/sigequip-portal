@@ -101,7 +101,7 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
   }
 
     function validateProduct() {
-      $scope.noProductSelected = $scope.selectedDrugCode === '';
+      $scope.noProductSelected = !$scope.selectedDrugCode;
       return !$scope.noProductSelected;
     }
 }
