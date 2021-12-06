@@ -266,6 +266,7 @@ public class RestStockCardService {
             List<StockCard> stockCards = backupStockCards(facilityId, stockCardDeleteDTOs, needDeletedProductCodeAndIds, userId);
             stockCardService.fullyDeleteStockCards(facilityId, stockCardDeleteDTOs, needDeletedProductCodeAndIds, stockCards);
             stockCardService.partialDeleteStockCards(facilityId, needDeletedProductCodeAndIds, stockCardDeleteDTOs);
+            stockCardService.deleteArchivedProductListByFacilityIdAndProductCode(facilityId,productCodes);
         }
     }
 

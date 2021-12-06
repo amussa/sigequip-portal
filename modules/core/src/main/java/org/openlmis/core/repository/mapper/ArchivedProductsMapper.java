@@ -26,4 +26,9 @@ public interface ArchivedProductsMapper {
             "DELETE FROM archived_products WHERE facilityId = #{facilityId}"
     })
     void clearArchivedProductList(@Param("facilityId") long facilityId);
+
+    @Delete({
+        "DELETE FROM archived_products WHERE facilityId = #{facilityId} and productcode = ANY (#{productCodes}::VARCHAR[])"
+    })
+    void deleteArchivedProductListByFacilityIdAndProductCode(@Param("facilityId") long facilityId,@Param("productCodes") String productCodes);
 }

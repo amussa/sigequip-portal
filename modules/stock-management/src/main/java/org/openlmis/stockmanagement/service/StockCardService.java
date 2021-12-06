@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import org.openlmis.core.domain.Product;
 import org.openlmis.core.repository.ProductRepository;
 import org.openlmis.core.repository.SyncUpHashRepository;
+import org.openlmis.core.repository.mapper.ArchivedProductsMapper;
 import org.openlmis.core.repository.mapper.ProductMapper;
 import org.openlmis.core.service.FacilityService;
 import org.openlmis.stockmanagement.domain.*;
@@ -67,6 +68,8 @@ public class StockCardService {
   StockCardBakMapper stockCardBakMapper;
   @Autowired
   ProductMapper productMapper;
+  @Autowired
+  ArchivedProductsMapper archivedProductsMapper;
 
   @Autowired
   private SyncUpHashRepository syncUpHashRepository;
@@ -290,6 +293,16 @@ public class StockCardService {
 
   public List<StockCard> getStockCardSByProductIds(Long facilityId, Collection<Long> productIds) {
     return stockCardMapper.getStockCardsByProductIds(facilityId, convertToArrayString(productIds));
+  }
+
+  public void deleteArchivedProductListByFacilityIdAndProductCode(Long facilityId,List<String> productCodes){
+    if(productCodes.isEmpty()){
+      return;
+    }
+    String deletedProductCodes = convertToArrayString(productCodes);
+    logger.info("delete archived products by facilityId: {}, productCodes: {}", facilityId, productCodes);
+    archivedProductsMapper.deleteArchivedProductListByFacilityIdAndProductCode(facilityId,deletedProductCodes);
+
   }
 
   public void fullyDeleteStockCards(Long facilityId, List<StockCardDeleteDTO> stockCardDeleteDTOs, Map<String, Long> needDeletedProductCodeAndIds, List<StockCard> stockCards) {
