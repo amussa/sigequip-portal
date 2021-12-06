@@ -30,6 +30,10 @@ function NosDrugsReportController($scope, $controller, NosDrugsChartService, mes
     }
   };
 
+  $scope.onChangeSelectedDrug = function () {
+    $scope.loadReport();
+  };
+
   function validateDrugs () {
     $scope.invalidDrug = _.isEmpty($scope.selectedDrugs);
     return !$scope.invalidDrug;
