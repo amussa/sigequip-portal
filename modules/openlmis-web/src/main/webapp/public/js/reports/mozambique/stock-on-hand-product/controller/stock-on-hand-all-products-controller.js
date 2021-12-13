@@ -73,15 +73,16 @@ function StockOnHandAllProductsController($scope, $filter, $controller, NewRepor
     $scope.cache.put('dataOfStockOnHandReport', $scope.reportParams);
   };
   
-  $scope.generateRedirectToExpiryDateReportURL = function (productCode, facilityCode) {
+  $scope.generateRedirectToExpiryDateReportURL = function (facilityId,districtId,provinceId, productCode) {
     var date = $filter('date')($scope.reportParams.endTime, 'yyyy-MM-dd');
     
     return '/public/pages/reports/mozambique/index.html#/lot-expiry-dates' + '?' +
-      'facilityCode=' + facilityCode + '&' + 'date=' + date + '&' + 'drugCode=' + productCode;
+        "facilityId=" + facilityId + "&" + "districtId=" + districtId + "&" + "provinceId=" + provinceId
+        + '&' + 'date=' + date + '&' + 'drugCode=' + productCode;
   };
   
-  $scope.redirectToLotExpiryDateReport = function (productCode, facilityCode) {
-    $window.location.href = $scope.generateRedirectToExpiryDateReportURL(productCode, facilityCode);
+  $scope.redirectToLotExpiryDateReport = function (facilityId,districtId,provinceId,productCode) {
+    $window.location.href = $scope.generateRedirectToExpiryDateReportURL(facilityId,districtId,provinceId,productCode);
   };
   
   $scope.exportXLSX = function () {
@@ -127,6 +128,9 @@ function StockOnHandAllProductsController($scope, $filter, $controller, NewRepor
     var formattedSingleProductList = [];
     _.forEach(data, function (item) {
       var formatItem = {
+        facilityId: item.facilityId,
+        districtId: item.districtId,
+        provinceId: item.provinceId,
         facilityCode: item.facilityCode,
         facilityName: item.facilityName,
         productCode: item.productCode,
@@ -160,6 +164,9 @@ function StockOnHandAllProductsController($scope, $filter, $controller, NewRepor
     _.forEach(data, function (item) {
       _.forEach(item.lotList, function (lot, index) {
         var formatItem = {
+          facilityId: item.facilityId,
+          districtId: item.districtId,
+          provinceId: item.provinceId,
           facilityCode: item.facilityCode,
           facilityName: item.facilityName,
           productCode: item.productCode,

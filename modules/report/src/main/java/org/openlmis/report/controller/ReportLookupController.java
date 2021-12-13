@@ -592,7 +592,7 @@ public class ReportLookupController extends BaseController {
 
   @RequestMapping(value = "/entryLotOnHands.json", method = GET, headers = BaseController.ACCEPT_JSON)
   public ResponseEntity<OpenLmisResponse> getEntryLotOnHands(@RequestParam("occurred") Long occurred,
-      @RequestParam(value = "provinceId", required = false) Integer provinceId,
+      @RequestParam(value = "provinceId") Integer provinceId,
       @RequestParam(value = "districtId", required = false) Integer districtId,
       @RequestParam(value = "facilityId", required = false) Integer facilityId,
       HttpServletRequest request) {

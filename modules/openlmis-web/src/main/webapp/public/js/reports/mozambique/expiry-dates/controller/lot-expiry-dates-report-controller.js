@@ -4,8 +4,14 @@ function LotExpiryDatesReportController($scope, $controller, $http, $q, CubesGen
   $scope.populateOptions = function () {
     if(!_.isEmpty($routeParams)) {
       $scope.reportParams.endTime = $routeParams.date;
-      if($routeParams.facilityCode) {
-        $scope.reportParams.facilityId = $scope.getFacilityByCode($routeParams.facilityCode).id;
+      if($routeParams.facilityId) {
+        $scope.reportParams.facilityId = $routeParams.facilityId;
+      }
+      if($routeParams.districtId) {
+        $scope.reportParams.districtId = $routeParams.districtId;
+      }
+      if($routeParams.provinceId) {
+        $scope.reportParams.provinceId = $routeParams.provinceId;
       }
       $scope.cursor = $routeParams.drug_code;
       $scope.loadReport();

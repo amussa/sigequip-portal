@@ -96,7 +96,7 @@
             <span>{{entry.sumStockOnHand | number:0}}</span>
           </td>
           <td ng-show="entry.isFirst" rowspan="{{entry.rowSpan}}">
-            <a ng-click="redirectToLotExpiryDateReport(entry.productCode, entry.facilityCode)" style="cursor:pointer;">
+            <a ng-click="redirectToLotExpiryDateReport(entry.facilityId, entry.districtId, entry.provinceId, entry.productCode)" style="cursor:pointer;">
               <span>{{entry.soonest_expiring_loh}}</span>
             </a>
           </td>

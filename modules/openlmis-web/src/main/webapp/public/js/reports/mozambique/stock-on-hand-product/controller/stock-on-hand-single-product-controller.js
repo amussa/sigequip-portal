@@ -35,6 +35,9 @@ function StockOnHandSingleProductController($scope, $filter, $controller, $http,
     var formattedSingleProductList = [];
     _.forEach(data, function (item) {
       var formatItem = {
+        facilityId: item.facilityId,
+        districtId: item.districtId,
+        provinceId: item.provinceId,
         facilityName: item.facilityName,
         facilityCode: item.facilityCode,
         productName: item.productName,
@@ -67,6 +70,9 @@ function StockOnHandSingleProductController($scope, $filter, $controller, $http,
     _.forEach(data, function (item) {
         _.forEach(item.lotList, function (lot, index) {
           var formatItem = {
+            facilityId: item.facilityId,
+            districtId: item.districtId,
+            provinceId: item.provinceId,
             facilityName: item.facilityName,
             productName: item.productName,
             stockOnHandStatus: item.stockOnHandStatus,
@@ -124,18 +130,18 @@ function StockOnHandSingleProductController($scope, $filter, $controller, $http,
     }
   };
 
-  $scope.generateRedirectToExpiryDateReportURL = function (facilityCode) {
+  $scope.generateRedirectToExpiryDateReportURL = function (facilityId,districtId,provinceId) {
     var date = $filter('date')($scope.reportParams.endTime, "yyyy-MM-dd");
 
     var redirectedURL = "/public/pages/reports/mozambique/index.html#/lot-expiry-dates" + "?" +
-      "facilityCode=" + facilityCode + "&" +
+      "facilityId=" + facilityId + "&" + "districtId=" + districtId + "&" + "provinceId=" + provinceId + "&" +
       "date=" + date + "&" +
       "drugCode=" + $scope.reportParams.productCode;
     return redirectedURL;
   };
 
-  $scope.redirectToLotExpiryDateReport = function (facilityCode) {
-    $window.location.href = $scope.generateRedirectToExpiryDateReportURL(facilityCode);
+  $scope.redirectToLotExpiryDateReport = function (facilityId,districtId,provinceId) {
+    $window.location.href = $scope.generateRedirectToExpiryDateReportURL(facilityId,districtId,provinceId);
   };
 
   $scope.cmmStatusStyle = function (status) {
