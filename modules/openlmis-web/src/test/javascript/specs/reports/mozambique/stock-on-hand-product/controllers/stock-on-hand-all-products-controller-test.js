@@ -86,7 +86,7 @@ xdescribe("Single facility Report Controller", function () {
       }
     };
 
-    expect(scope.generateRedirectToExpiryDateReportURL(drugCode)).toBe('/public/pages/reports/mozambique/index.html#/lot-expiry-dates?facilityCode=HF1&date=2016-11-01&drugCode=test');
+    expect(scope.generateRedirectToExpiryDateReportURL(2,3,4,drugCode)).toBe('/public/pages/reports/mozambique/index.html#/lot-expiry-dates?facilityId=2&districtId=3&provinceId=4&date=2016-11-01&drugCode=test');
   });
 
   it('should export data with all the required fields', function () {

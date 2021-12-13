@@ -63,7 +63,7 @@ describe('Single Product Report Controller', function () {
       productCode: '01A03'
     };
 
-    expect(scope.generateRedirectToExpiryDateReportURL(facilityCode)).toBe('/public/pages/reports/mozambique/index.html#/lot-expiry-dates?facilityCode=HF1&date=2016-11-01&drugCode=01A03');
+    expect(scope.generateRedirectToExpiryDateReportURL(2,3,4)).toBe('/public/pages/reports/mozambique/index.html#/lot-expiry-dates?facilityId=2&districtId=3&provinceId=4&date=2016-11-01&drugCode=01A03');
   });
 
   xit('should export data with district province name successfully', function () {
