@@ -77,8 +77,8 @@ function StockOnHandAllProductsController($scope, $filter, $controller, NewRepor
     var date = $filter('date')($scope.reportParams.endTime, 'yyyy-MM-dd');
     
     return '/public/pages/reports/mozambique/index.html#/lot-expiry-dates' + '?' +
-        "facilityId=" + facilityId + "&" + "districtId=" + districtId + "&" + "provinceId=" + provinceId
-        + '&' + 'date=' + date + '&' + 'drugCode=' + productCode;
+        "facilityId=" + facilityId + "&" + "districtId=" + districtId + "&" + "provinceId=" + provinceId +
+        '&' + 'date=' + date + '&' + 'drugCode=' + productCode;
   };
   
   $scope.redirectToLotExpiryDateReport = function (facilityId,districtId,provinceId,productCode) {
