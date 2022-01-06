@@ -264,9 +264,8 @@ public class RestStockCardService {
         Map<String, Long> needDeletedProductCodeAndIds = stockCardService.getProductsByCodes(productCodes);
         if (needDeletedProductCodeAndIds.size() > 0) {
             List<StockCard> stockCards = backupStockCards(facilityId, stockCardDeleteDTOs, needDeletedProductCodeAndIds, userId);
-            stockCardService.fullyDeleteStockCards(facilityId, stockCardDeleteDTOs, needDeletedProductCodeAndIds, stockCards);
+            stockCardService.fullyDeleteStockCards(facilityId, stockCardDeleteDTOs, needDeletedProductCodeAndIds, stockCards, productCodes);
             stockCardService.partialDeleteStockCards(facilityId, needDeletedProductCodeAndIds, stockCardDeleteDTOs);
-            stockCardService.deleteArchivedProductListByFacilityIdAndProductCode(facilityId,productCodes);
         }
     }
 
