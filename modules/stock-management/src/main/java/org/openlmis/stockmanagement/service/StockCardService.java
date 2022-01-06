@@ -305,14 +305,16 @@ public class StockCardService {
 
   }
 
-  public void fullyDeleteStockCards(Long facilityId, List<StockCardDeleteDTO> stockCardDeleteDTOs, Map<String, Long> needDeletedProductCodeAndIds, List<StockCard> stockCards, List<String> productCodes) {
+  public void fullyDeleteStockCards(Long facilityId, List<StockCardDeleteDTO> stockCardDeleteDTOs, Map<String, Long> needDeletedProductCodeAndIds, List<StockCard> stockCards) {
     List<Long> fullyDeletedProductIds = new ArrayList<>();
+    List<String> fullyDeletedProductCodes = new ArrayList<>();
     for (StockCardDeleteDTO stockCardDeleteDTO : stockCardDeleteDTOs) {
       if (stockCardDeleteDTO.isFullyDelete()) {
         fullyDeletedProductIds.add(needDeletedProductCodeAndIds.get(stockCardDeleteDTO.getProductCode()));
+        fullyDeletedProductCodes.add(stockCardDeleteDTO.getProductCode());
       }
     }
-    if (fullyDeletedProductIds.size() <= 0) {
+    if (fullyDeletedProductIds.isEmpty()) {
       return;
     }
 
@@ -333,7 +335,7 @@ public class StockCardService {
     stockCardMapper.deleteStockCardEntryByStockCardIds(scIds);
     stockCardMapper.deleteStockCards(scIds);
 
-    deleteArchivedProductListByFacilityIdAndProductCode(facilityId,productCodes);
+    deleteArchivedProductListByFacilityIdAndProductCode(facilityId,fullyDeletedProductCodes);
   }
 
   private void deleteSyncUpHash(Long facilityId, Map<String, Long> needDeletedProductCodeAndIds, List<StockCard> stockCards) {
