@@ -80,11 +80,15 @@ public class EmailService {
     for (final EmailMessage oMessage : mailMessage) {
       initEmailAttachment(oMessage);
 
-      if (oMessage.isHtml()) {
-        mailSender.send(setUpMimeMessage(oMessage));
-      } else {
-        oMessage.setFrom(fromAddress);
-        mailSender.send(oMessage);
+      try {
+        if (oMessage.isHtml()) {
+          mailSender.send(setUpMimeMessage(oMessage));
+        } else {
+          oMessage.setFrom(fromAddress);
+          mailSender.send(oMessage);
+        }
+      } catch (Exception e) {
+        logger.error(String.format("Sending email error: %s", e.getMessage()));
       }
     }
 
