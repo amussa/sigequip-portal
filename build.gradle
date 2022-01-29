@@ -11,7 +11,6 @@
 apply plugin: 'idea'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'properties'
-apply plugin: 'sonar-runner'
 apply plugin: 'com.palantir.jacoco-full-report'
 
 idea.project.languageLevel = '1.7'
@@ -32,33 +31,12 @@ buildscript {
         classpath 'com.palantir:jacoco-coverage:0.4.0'
     }
 }
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "$sonarServer"
-        property "sonar.jdbc.url", "$sonarJdbc"
-        property "sonar.projectName", "$sonarProject"
-        property "sonar.projectVersion", "$sonarProjectVersion"
-    }
-}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'properties'
     apply plugin: 'jacoco'
-    idea {
-        project {
-            ext.languageLevel = '1.7'
-            ext.jdkName = '1.7'
-        }
-    }
-
-    sonarRunner {
-        sonarProperties {
-            property "sonar.junit.reportsPath", "$buildDir/test-results/"
-            property "sonar.java.coveragePlugin", "cobertura"
-            property "sonar.cobertura.reportPath", "$buildDir/reports/cobertura/coverage.xml"
-        }
-    }
 
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
