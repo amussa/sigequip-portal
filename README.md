@@ -21,7 +21,7 @@ System Requirements
 - Node.js
   * **For Linux users**
     - First, Install nvm to manage our node version. `wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash`
-    * Install the nodejs by nvm。 `nvm install v9.11.2` 
+    * Install the nodejs by nvm。 `nvm install v9.11.2`
   * **For Mac users**
     * Install Node.js [directly](http://nodejs.org/) or using homebrew using `brew install nodejs`
     * Those who install Node.js using Homebrew should export the following (or include in `$HOME/.bash_profile` or `$HOME/.profile` or `$HOME/.bashrc` or `$HOME/.zshrc`, depending on your shell.
