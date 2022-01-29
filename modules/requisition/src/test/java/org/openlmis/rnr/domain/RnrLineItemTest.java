@@ -243,7 +243,7 @@ public class RnrLineItemTest {
     lineItem.validateMandatoryFields(template);
   }
 
-  //@Ignore("delete this exception")
+  @Ignore("delete this exception")
   @Test
   public void shouldThrowExceptionIfCalculationForQuantityDispensedAndStockInHandNotValidAndFormulaValidatedTrue() throws Exception {
     lineItem.setBeginningBalance(10);

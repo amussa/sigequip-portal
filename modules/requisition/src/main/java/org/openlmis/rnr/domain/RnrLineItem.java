@@ -228,7 +228,7 @@ public class RnrLineItem extends LineItem {
         LOGGER.warn("facilityId {} programId {}, productCode {} is not match code",
             LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_FACILITY_ID),
             template.getProgramId(), productCode);
-        throw new DataException(RNR_VALIDATION_EQUATION_NOT_EQUAL);
+        //throw new DataException(RNR_VALIDATION_EQUATION_NOT_EQUAL);
       }
     }
   }
