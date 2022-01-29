@@ -79,6 +79,7 @@
     <import resource="classpath:/applicationContext-demographics.xml"/>
     <import resource="classpath:/applicationContext-vaccine.xml"/>
     <import resource="classpath:/applicationContext-stock-management.xml"/>
+    <import resource="classpath:/applicationContext-email-task.xml"/>
 
     <bean id="userAuthenticationProvider" class="org.openlmis.authentication.web.UserAuthenticationProvider"/>
 
