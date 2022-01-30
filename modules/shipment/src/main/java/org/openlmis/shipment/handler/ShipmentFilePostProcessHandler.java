@@ -11,8 +11,7 @@
 package org.openlmis.shipment.handler;
 
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.order.service.OrderService;
 import org.openlmis.shipment.domain.ShipmentFileInfo;
 import org.openlmis.shipment.service.ShipmentService;
@@ -49,7 +48,7 @@ public class ShipmentFilePostProcessHandler {
   @Autowired
   private OrderService orderService;
 
-  private static final Logger logger = LogManager.getLogger(ShipmentFilePostProcessHandler.class);
+  private static final Logger logger = Logger.getLogger(ShipmentFilePostProcessHandler.class);
 
 
   @Transactional

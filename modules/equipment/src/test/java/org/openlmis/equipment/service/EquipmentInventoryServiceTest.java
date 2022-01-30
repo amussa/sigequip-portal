@@ -12,8 +12,7 @@
 
 package org.openlmis.equipment.service;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -44,7 +43,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class EquipmentInventoryServiceTest {
 
-  private static Logger logger = LogManager.getLogger(EquipmentInventoryServiceTest.class);
+  private static Logger logger = Logger.getLogger(EquipmentInventoryServiceTest.class);
 
   @Mock
   private EquipmentInventoryRepository repository;

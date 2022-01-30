@@ -13,8 +13,7 @@ package org.openlmis.shipment.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.core.domain.EDIFileColumn;
 import org.openlmis.core.exception.DataException;
 
@@ -33,7 +32,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @NoArgsConstructor
 public class ShipmentLineItemDTO {
 
-  private static Logger logger = LogManager.getLogger(ShipmentLineItemDTO.class);
+  private static Logger logger = Logger.getLogger(ShipmentLineItemDTO.class);
   private String orderNumber;
   private Long orderId;
   private String concatenatedOrderId;

@@ -13,8 +13,7 @@ package org.openlmis.order.task;
 
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.FailedToCreateProducerException;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.core.domain.FacilityFtpDetails;
 import org.openlmis.core.domain.SupplyLine;
 import org.openlmis.core.service.ConfigurationSettingService;
@@ -74,7 +73,7 @@ public class OrderFtpTask {
     localFileDirectory = configurationSettingService.getConfigurationStringValue("LOCAL_ORDER_EXPORT_DIRECTORY");
   }
 
-  private static Logger logger = LogManager.getLogger(OrderFtpTask.class);
+  private static Logger logger = Logger.getLogger(OrderFtpTask.class);
 
   private static String CONNECTION_REFUSED = "Connection refused";
   private static String CONNECTION_REFUSED_TIMEOUT = "connect timed out";

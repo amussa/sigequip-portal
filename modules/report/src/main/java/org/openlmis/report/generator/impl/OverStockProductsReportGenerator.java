@@ -2,8 +2,7 @@ package org.openlmis.report.generator.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.core.utils.DateUtil;
 import org.openlmis.report.generator.AbstractReportModelGenerator;
 import org.openlmis.report.model.dto.LotInfo;
@@ -25,7 +24,7 @@ import java.util.Map;
 @Component(value = "overStockProductsReport")
 public class OverStockProductsReportGenerator extends AbstractReportModelGenerator {
 
-    private static Logger logger = LogManager.getLogger(OverStockProductsReportGenerator.class);
+    private static Logger logger = Logger.getLogger(OverStockProductsReportGenerator.class);
 
     @Autowired
     private SimpleTableService simpleTableService;

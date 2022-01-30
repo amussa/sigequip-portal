@@ -1,7 +1,6 @@
 package org.openlmis.stockmanagement.service;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.stockmanagement.domain.CMMEntry;
 import org.openlmis.stockmanagement.repository.CMMRepository;
 import org.openlmis.stockmanagement.repository.StockCardRepository;
@@ -18,7 +17,7 @@ public class CMMService {
   @Autowired
   private StockCardRepository stockCardRepository;
 
-  private static final Logger LOGGER = LogManager.getLogger(CMMService.class);
+  private static final Logger LOGGER = Logger.getLogger(CMMService.class);
 
   public void updateCMMEntries(List<CMMEntry> cmmEntries) {
     for (CMMEntry entry: cmmEntries) {

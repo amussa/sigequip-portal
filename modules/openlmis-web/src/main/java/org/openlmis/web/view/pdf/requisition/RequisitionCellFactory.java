@@ -13,8 +13,7 @@ package org.openlmis.web.view.pdf.requisition;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import org.apache.commons.lang.NumberUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.rnr.domain.Column;
 import org.openlmis.rnr.domain.ColumnType;
 import org.openlmis.rnr.domain.LineItem;
@@ -40,7 +39,7 @@ public class RequisitionCellFactory {
   public static final int WIDTH_PERCENTAGE = 100;
   private static final String OK_IMAGE = "images/ok-icon.png";
 
-  public static final Logger logger = LogManager.getLogger(RequisitionCellFactory.class);
+  public static final Logger logger = Logger.getLogger(RequisitionCellFactory.class);
 
   public static PdfPCell numberCell(String value) {
     PdfPCell cell = getPdfPCell(value);

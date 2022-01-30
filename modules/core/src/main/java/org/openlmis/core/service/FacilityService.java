@@ -13,8 +13,7 @@ package org.openlmis.core.service;
 
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections.Predicate;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.ict4h.atomfeed.server.service.Event;
 import org.ict4h.atomfeed.server.service.EventService;
 import org.joda.time.DateTime;
@@ -84,7 +83,7 @@ public class FacilityService {
     @Autowired
     MessageService messageService;
 
-    private static final Logger LOGGER = LogManager.getLogger(FacilityService.class);
+    private static final Logger LOGGER = Logger.getLogger(FacilityService.class);
 
     @Transactional
     public void update(Facility facility) {

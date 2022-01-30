@@ -13,8 +13,7 @@ package org.openlmis.web.controller;
 
 
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.core.exception.DataException;
 import org.openlmis.core.web.controller.BaseController;
 import org.openlmis.help.domain.HelpDocument;
@@ -59,7 +58,7 @@ public class HelpCateoryController extends BaseController {
     public static final String UPLOAD_FILE_SUCCESS = "upload.file.successful";
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
-    public static final Logger LOGGER = LogManager.getLogger(HelpCateoryController.class);
+    public static final Logger LOGGER = Logger.getLogger(HelpCateoryController.class);
     @Autowired
     private HelpTopicService helpTopicService;
     @Value("${help.document.uploadLocation}")

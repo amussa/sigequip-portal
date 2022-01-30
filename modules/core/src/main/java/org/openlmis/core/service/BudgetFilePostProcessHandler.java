@@ -11,8 +11,7 @@
 package org.openlmis.core.service;
 
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openlmis.core.domain.BudgetFileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -42,7 +41,7 @@ public class BudgetFilePostProcessHandler {
   @Autowired
   private MessageChannel budgetFtpArchiveOutputChannel;
 
-  private static final Logger logger = LogManager.getLogger(BudgetFilePostProcessHandler.class);
+  private static final Logger logger = Logger.getLogger(BudgetFilePostProcessHandler.class);
 
 
   @Transactional

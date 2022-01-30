@@ -1,14 +1,13 @@
 package org.openlmis.web.interceptor;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestLogFilter extends AbstractRequestLoggingFilter {
 
-  private Logger logger = LogManager.getLogger(getClass());
+  private Logger logger = Logger.getLogger(getClass());
   private static final String TEMPLATE = "User is %s, facilityId is %s, Unique Device id is %s, DeviceInfo is %s, VersionCode is %s, message is %s";
 
   @Override
