@@ -16,9 +16,8 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
-import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
-import org.apache.log4j.WriterAppender;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.junit.Before;
@@ -48,9 +47,8 @@ public class ApplicationLoggerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        logger = Logger.getLogger(ApplicationLogger.class);
+        logger = LogManager.getLogger(ApplicationLogger.class);
         outputStream = new ByteArrayOutputStream();
-        logger.addAppender(new WriterAppender(new SimpleLayout(), outputStream));
         applicationLogger = new ApplicationLogger();
     }
 

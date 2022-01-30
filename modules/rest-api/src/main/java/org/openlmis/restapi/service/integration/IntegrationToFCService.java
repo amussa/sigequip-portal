@@ -2,7 +2,8 @@ package org.openlmis.restapi.service.integration;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.Soh;
 import org.openlmis.core.domain.StockMovement;
 import org.openlmis.core.exception.DataException;
@@ -25,7 +26,7 @@ import java.util.List;
 @Service
 public class IntegrationToFCService {
 
-    private static Logger logger = Logger.getLogger(IntegrationToFCService.class);
+    private static Logger logger = LogManager.getLogger(IntegrationToFCService.class);
 
     private IntegrationRepository integrationRepository;
 

@@ -18,8 +18,8 @@ import lombok.Setter;
 import org.openlmis.core.domain.EDIFileColumn;
 import org.openlmis.core.exception.DataException;
 import org.openlmis.core.message.OpenLmisMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -43,7 +43,7 @@ public class BudgetLineItemDTO {
   private String allocatedBudget;
   private String notes;
 
-  private static Logger logger = LoggerFactory.getLogger(BudgetLineItemDTO.class);
+  private static Logger logger = LogManager.getLogger(BudgetLineItemDTO.class);
 
   public static BudgetLineItemDTO populate(List<String> fieldsInOneRow, Collection<EDIFileColumn> budgetFileColumns) {
     BudgetLineItemDTO lineItemDTO = new BudgetLineItemDTO();

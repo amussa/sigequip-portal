@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.utils.DateUtil;
 import org.openlmis.report.annotations.RequiredParam;
 import org.openlmis.report.generator.RegionLevel;
@@ -20,7 +21,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class StockReportParam {
 
-    private static Logger logger = Logger.getLogger(StockReportParam.class);
+    private static Logger logger = LogManager.getLogger(StockReportParam.class);
     @RequiredParam
     private Date endTime;
 

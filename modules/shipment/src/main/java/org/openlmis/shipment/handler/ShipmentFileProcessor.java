@@ -11,7 +11,8 @@
 package org.openlmis.shipment.handler;
 
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.EDIFileColumn;
 import org.openlmis.core.domain.EDIFileTemplate;
 import org.openlmis.core.exception.DataException;
@@ -51,7 +52,7 @@ import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 @MessageEndpoint
 @NoArgsConstructor
 public class ShipmentFileProcessor {
-  private static Logger logger = Logger.getLogger(ShipmentFileProcessor.class);
+  private static Logger logger = LogManager.getLogger(ShipmentFileProcessor.class);
 
   @Autowired
   private ShipmentFilePostProcessHandler shipmentFilePostProcessHandler;

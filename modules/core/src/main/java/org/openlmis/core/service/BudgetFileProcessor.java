@@ -11,7 +11,8 @@
 package org.openlmis.core.service;
 
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.*;
 import org.openlmis.core.dto.BudgetLineItemDTO;
 import org.openlmis.core.exception.DataException;
@@ -43,7 +44,7 @@ import static org.supercsv.prefs.CsvPreference.STANDARD_PREFERENCE;
 @NoArgsConstructor
 public class BudgetFileProcessor {
 
-  private static Logger logger = Logger.getLogger(BudgetFileProcessor.class);
+  private static Logger logger = LogManager.getLogger(BudgetFileProcessor.class);
 
   @Autowired
   private BudgetFileTemplateService budgetFileTemplateService;

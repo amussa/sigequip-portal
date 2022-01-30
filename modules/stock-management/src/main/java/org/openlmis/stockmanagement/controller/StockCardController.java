@@ -13,7 +13,8 @@ package org.openlmis.stockmanagement.controller;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.Product;
 import org.openlmis.core.domain.Right;
 import org.openlmis.core.domain.StockAdjustmentReason;
@@ -56,7 +57,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @NoArgsConstructor
 public class StockCardController extends BaseController
 {
-    private static Logger logger = Logger.getLogger(StockCardController.class);
+    private static Logger logger = LogManager.getLogger(StockCardController.class);
 
     @Autowired
     private FacilityRepository facilityRepository;

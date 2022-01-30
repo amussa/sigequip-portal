@@ -19,7 +19,8 @@ import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.feed.atom.Feed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.WireFeedOutput;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.ict4h.atomfeed.server.service.EventFeedService;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -59,7 +60,7 @@ public class VendorEventFeedService {
   private static final Pattern XML_CDATA_PATTERN = compile("(?:<!\\[CDATA\\[)(.+)(?:\\]\\]>)");
   private static final String VENDOR_MAPPING_TEMPLATE = "vendorMapping_%s_%s.xml";
 
-  private static final Logger logger = Logger.getLogger(VendorEventFeedService.class);
+  private static final Logger logger = LogManager.getLogger(VendorEventFeedService.class);
 
   public String getRecentFeed(String requestURL, String vendor, String category) {
     try {

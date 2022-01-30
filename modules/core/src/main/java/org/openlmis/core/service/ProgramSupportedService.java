@@ -10,7 +10,8 @@
 
 package org.openlmis.core.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.ict4h.atomfeed.server.service.EventService;
 import org.openlmis.core.domain.Facility;
 import org.openlmis.core.domain.Program;
@@ -56,7 +57,7 @@ public class ProgramSupportedService {
     @Autowired
     MessageService messageService;
 
-    Logger logger = Logger.getLogger(ProgramSupportedService.class);
+    Logger logger = LogManager.getLogger(ProgramSupportedService.class);
 
 
     public List<ProgramSupported> getAllByFacilityId(Long facilityId) {

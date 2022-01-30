@@ -15,7 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.exception.DataException;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.io.IOException;
 @NoArgsConstructor
 public abstract class BaseFeedDTO {
 
-  private static Logger logger = Logger.getLogger(BaseFeedDTO.class);
+  private static Logger logger = LogManager.getLogger(BaseFeedDTO.class);
 
   @JsonIgnore
   public String getSerializedContents() {

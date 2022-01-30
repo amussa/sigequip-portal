@@ -12,7 +12,8 @@
 
 package org.openlmis.equipment.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.Facility;
 import org.openlmis.core.domain.Pagination;
 import org.openlmis.core.service.FacilityService;
@@ -33,7 +34,7 @@ public class EquipmentInventoryService {
 
   @Autowired
   EquipmentInventoryRepository repository;
-  Logger logger = Logger.getLogger(EquipmentInventoryService.class);
+  Logger logger = LogManager.getLogger(EquipmentInventoryService.class);
   @Autowired
   private FacilityService facilityService;
   @Autowired

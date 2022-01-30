@@ -12,7 +12,8 @@
 
 package org.openlmis.equipment.repository;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openlmis.core.domain.Pagination;
 import org.openlmis.equipment.domain.*;
 import org.openlmis.equipment.repository.mapper.*;
@@ -24,7 +25,7 @@ import java.util.List;
 @Repository
 public class EquipmentInventoryRepository {
 
-  public static Logger logger = Logger.getLogger(EquipmentInventoryRepository.class);
+  public static Logger logger = LogManager.getLogger(EquipmentInventoryRepository.class);
   @Autowired
   EquipmentInventoryMapper mapper;
   @Autowired
