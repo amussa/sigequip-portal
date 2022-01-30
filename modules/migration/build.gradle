@@ -7,11 +7,11 @@ configurations {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.9',
-            'com.googlecode.flyway:flyway-core:2.0',
-            'com.googlecode.flyway:flyway-ant:2.0',
+            'com.googlecode.flyway:flyway-core:1.7',
+            'com.googlecode.flyway:flyway-ant:1.7',
             project(':modules:db')
 
-    flyway 'com.googlecode.flyway:flyway-ant:2.0',
+    flyway 'com.googlecode.flyway:flyway-ant:1.7',
             'postgresql:postgresql:9.1-901.jdbc4'
     classpath 'postgresql:postgresql:9.1-901.jdbc4'
 
