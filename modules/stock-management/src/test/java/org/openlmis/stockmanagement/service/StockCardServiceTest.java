@@ -1,23 +1,28 @@
 package org.openlmis.stockmanagement.service;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.openlmis.LmisThreadLocalUtils;
 import org.openlmis.core.builder.FacilityBuilder;
 import org.openlmis.core.builder.ProductBuilder;
 import org.openlmis.core.domain.Facility;
 import org.openlmis.core.domain.Product;
 import org.openlmis.core.domain.StockAdjustmentReason;
+import org.openlmis.core.exception.DataException;
 import org.openlmis.core.repository.ProductRepository;
 import org.openlmis.core.service.FacilityService;
 import org.openlmis.db.categories.UnitTests;
 import org.openlmis.stockmanagement.domain.*;
 import org.openlmis.stockmanagement.repository.LotRepository;
 import org.openlmis.stockmanagement.repository.StockCardRepository;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 
@@ -29,10 +34,12 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @Category(UnitTests.class)
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(BlockJUnit4ClassRunner.class)
+@PrepareForTest({LmisThreadLocalUtils.class})
 public class StockCardServiceTest {
 
   @Mock
@@ -46,6 +53,9 @@ public class StockCardServiceTest {
 
   @Mock
   private StockCardRepository repository;
+
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
 
   private StockCardService service;
 
@@ -66,6 +76,9 @@ public class StockCardServiceTest {
 
   @Before
   public void setup() {
+    mockStatic(LmisThreadLocalUtils.class);
+    when(LmisThreadLocalUtils.getHeader("VersionCode")).thenReturn("87");
+
     stockCardId = 1;
     dummyCard.setId(stockCardId);
 
@@ -292,5 +305,26 @@ public class StockCardServiceTest {
 
     assertThat(allValues.get(0).getLot(), is(lot));
     assertThat(allValues.get(0).getStockCard(), is(stockCard));
+  }
+
+
+  @Test
+  public void shouldThrowExceptionIfNotFirstInventory() {
+    StockCard stockCard = new StockCard();
+    stockCard.setFacility(defaultFacility);
+    stockCard.setProduct(defaultProduct);
+    stockCard.setTotalQuantityOnHand(100L);
+    StockCardEntry stockCardEntry = new StockCardEntry(stockCard, StockCardEntryType.ADJUSTMENT, 100L, new Date(), "", 0L);
+    StockAdjustmentReason stockAdjustmentReason = new StockAdjustmentReason();
+    stockAdjustmentReason.setName("INVENTORY");
+    stockCardEntry.setAdjustmentReason(stockAdjustmentReason);
+
+    stockCardEntry.addKeyValue("soh", "210");
+    stockCardEntry.addKeyValue("signature", "yyds");
+
+    expectedException.expect(DataException.class);
+    expectedException.expectMessage("error.stock.entry.first.inventory");
+
+    service.addStockCardEntry(stockCardEntry);
   }
 }

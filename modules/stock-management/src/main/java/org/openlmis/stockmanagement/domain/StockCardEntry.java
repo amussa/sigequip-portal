@@ -136,7 +136,7 @@ public class StockCardEntry extends BaseModel {
 
   private void validFirstInventory() {
     if (!(this.getAdjustmentReason().getName().equals("INVENTORY")
-        && this.getQuantity() >= 0)) {
+        && this.getQuantity() >= 0 && !isHaveSignature()) ) {
       logger.error("stock movement first inventory error");
       logger.error(
           "stock movement first inventory error, facilityId {},version {} , productCode: {} movement is {}",
@@ -146,6 +146,15 @@ public class StockCardEntry extends BaseModel {
           throw new DataException("error.stock.entry.first.inventory");
       }
     }
+  }
+
+  private boolean isHaveSignature(){
+    for (StockCardEntryKV stockCardEntryKV : extensions) {
+      if (stockCardEntryKV.getKey().equals("signature")) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Long findStockOnHand() {
