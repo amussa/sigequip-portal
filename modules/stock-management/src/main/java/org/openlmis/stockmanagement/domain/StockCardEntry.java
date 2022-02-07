@@ -150,7 +150,8 @@ public class StockCardEntry extends BaseModel {
 
   private boolean isHaveSignature(){
     for (StockCardEntryKV stockCardEntryKV : extensions) {
-      if (stockCardEntryKV.getKey().equals("signature")) {
+      if (stockCardEntryKV.getKey().equals("signature") && stockCardEntryKV.getValue() != null &&
+          !stockCardEntryKV.getValue().isEmpty()) {
         return true;
       }
     }
