@@ -10,10 +10,17 @@
 
 package org.openlmis.email.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 import lombok.NoArgsConstructor;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.openlmis.email.domain.EmailAttachment;
+import org.openlmis.email.domain.EmailFailSentLog;
+import org.openlmis.email.domain.EmailFailSentType;
 import org.openlmis.email.domain.EmailMessage;
 import org.openlmis.email.repository.EmailNotificationRepository;
 import org.slf4j.Logger;
@@ -73,13 +80,28 @@ public class EmailService {
     return new AsyncResult<>(true);
   }
 
+  public List<EmailFailSentLog> queryEmailFailSentLogByCreatedDate(Date startDate, Date endDate) {
+    return repository.queryEmailFailSentLogByCreatedDate(startDate,endDate);
+  }
+
+  public EmailFailSentLog queryEmailFailSentLogById(Long id){
+    return repository.queryEmailFailSentLogById(id);
+  }
+
+  public void updateEmailSentFailLogManualSent(Long emailLogId){
+    repository.updateEmailSentFailLogManualSent(emailLogId);
+  }
+
+  public void updateEmailNotificationsSentFalse(Long emailId){
+    repository.updateEmailNotificationsSentFalse(emailId);
+  }
+
   public void processEmails(@Payload List<EmailMessage> mailMessage) {
     if (!mailSendingFlag) {
       return;
     }
     for (final EmailMessage oMessage : mailMessage) {
       initEmailAttachment(oMessage);
-
       try {
         if (oMessage.isHtml()) {
           mailSender.send(setUpMimeMessage(oMessage));
@@ -87,11 +109,46 @@ public class EmailService {
           oMessage.setFrom(fromAddress);
           mailSender.send(oMessage);
         }
+        deleteEmailAttachmentCache(oMessage.getEmailAttachments());
       } catch (Exception e) {
         logger.error(String.format("Sending email error: %s", e.getMessage()));
+        EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
+        emailFailSentLog.setRequisitionId(getRequisitionId(oMessage.getSubject()));
+        emailFailSentLog.setEmailId(oMessage.getId());
+        emailFailSentLog.setErrorMsg(e.getMessage());
+        emailFailSentLog.setType(EmailFailSentType.SENT_FAIL);
+        insertEmailFailSentLog(emailFailSentLog);
       }
     }
 
+  }
+
+  private void deleteEmailAttachmentCache(List<EmailAttachment> emailAttachments){
+    if(emailAttachments != null && !emailAttachments.isEmpty()){
+      for(EmailAttachment attachment : emailAttachments){
+        Path path = Paths.get(attachment.getAttachmentPath());
+        try {
+          Files.delete(path);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  private Long getRequisitionId(String subject){
+    Long requisitionId = null;
+    if(subject != null) {
+      String[] splits = subject.split("#");
+      if(splits.length >=2){
+        requisitionId = Long.valueOf(splits[1]);
+      }
+    }
+    return requisitionId;
+  }
+
+  public void insertEmailFailSentLog(EmailFailSentLog emailFailSentLog){
+    repository.insertEmailFailSentLog(emailFailSentLog);
   }
 
   private void initEmailAttachment(EmailMessage oMessage) {

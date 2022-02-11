@@ -18,6 +18,8 @@ import org.openlmis.core.domain.User;
 import org.openlmis.core.service.ApproverService;
 import org.openlmis.core.service.ConfigurationSettingService;
 import org.openlmis.core.service.StaticReferenceDataService;
+import org.openlmis.email.domain.EmailFailSentLog;
+import org.openlmis.email.domain.EmailFailSentType;
 import org.openlmis.email.service.EmailService;
 import org.openlmis.rnr.domain.Rnr;
 import org.slf4j.Logger;
@@ -76,18 +78,22 @@ public class NotificationServices {
         break;
     }
 
-    if (users != null) {
-
-      if (staticReferenceDataService.getBoolean("toggle.email.attachment.simam")) {
-        //catch all the issues when creating file
-        try {
-          requisitionEmailServiceForSIMAM.queueRequisitionEmailWithAttachment(requisition, users);
-        } catch (Throwable t) {
-          LOGGER.error("There is a error when creating requisition email: " + t.getMessage());
-        }
-        return;
+    if (staticReferenceDataService.getBoolean("toggle.email.attachment.simam")) {
+      //catch all the issues when creating file
+      try {
+        requisitionEmailServiceForSIMAM.queueRequisitionEmailWithAttachment(requisition, users);
+      } catch (Exception e) {
+        LOGGER.error("There is a error when creating requisition email: " + e.getMessage());
+        EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
+        emailFailSentLog.setRequisitionId(requisition.getId());
+        emailFailSentLog.setErrorMsg(e.getMessage());
+        emailFailSentLog.setType(EmailFailSentType.ATTACHMENT_FAIL);
+        emailService.insertEmailFailSentLog(emailFailSentLog);
       }
+      return;
+    }
 
+    if (users != null ) {
       for (User user : users) {
         if (user.isMobileUser()) {
           continue;

@@ -258,6 +258,9 @@ public class RequisitionController extends BaseController {
         }
         zipOutputStream.closeEntry();
         fileInputStream.close();
+        if(srcFile.exists()){
+          srcFile.delete();
+        }
       }
     } catch (Exception e) {
       logger.error(e.getMessage());

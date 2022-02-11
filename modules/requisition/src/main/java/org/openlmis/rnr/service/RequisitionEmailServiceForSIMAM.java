@@ -12,6 +12,8 @@ import org.openlmis.core.domain.User;
 import org.openlmis.core.service.ConfigurationSettingService;
 import org.openlmis.core.service.StaticReferenceDataService;
 import org.openlmis.email.domain.EmailAttachment;
+import org.openlmis.email.domain.EmailFailSentLog;
+import org.openlmis.email.domain.EmailFailSentType;
 import org.openlmis.email.domain.EmailMessage;
 import org.openlmis.email.service.EmailService;
 import org.openlmis.files.excel.ExcelHandler;
@@ -82,10 +84,18 @@ public class RequisitionEmailServiceForSIMAM {
 										});
 
 	public void queueRequisitionEmailWithAttachment(Rnr requisition, List<User> users) {
-		if (!requisition.getStatus().equals(RnrStatus.AUTHORIZED) || users.size() <= 0) {
+
+ 		if (!requisition.getStatus().equals(RnrStatus.AUTHORIZED)) {
 			return;
 		}
-
+		if(users == null || users.isEmpty()) {
+			EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
+			emailFailSentLog.setRequisitionId(requisition.getId());
+			emailFailSentLog.setErrorMsg("User is null");
+			emailFailSentLog.setType(EmailFailSentType.SUPPLIER_NULL);
+			emailService.insertEmailFailSentLog(emailFailSentLog);
+			return;
+		}
 		insertEmailMessages(requisition, users);
 	}
 

@@ -1,6 +1,8 @@
 package org.openlmis.email.repository;
 
+import java.util.Date;
 import org.openlmis.email.domain.EmailAttachment;
+import org.openlmis.email.domain.EmailFailSentLog;
 import org.openlmis.email.domain.EmailMessage;
 import org.openlmis.email.repository.mapper.EmailNotificationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +42,26 @@ public class EmailNotificationRepository {
 
   public List<EmailAttachment> getEmailAttachmentsByEmailId(Long id) {
     return mapper.queryEmailAttachmentsByEmailId(id);
+  }
+
+  public EmailFailSentLog insertEmailFailSentLog(EmailFailSentLog emailFailSentLog){
+    mapper.insertEmailFailSentLog(emailFailSentLog);
+    return emailFailSentLog;
+  }
+
+  public List<EmailFailSentLog> queryEmailFailSentLogByCreatedDate(Date startDate, Date endDate) {
+    return mapper.queryEmailFailSentLogByCreatedDate(startDate,endDate);
+  }
+
+  public EmailFailSentLog queryEmailFailSentLogById(Long id){
+    return mapper.queryEmailFailSentLogById(id);
+  }
+
+  public void updateEmailSentFailLogManualSent(Long emailLogId){
+    mapper.updateEmailSentFailLogManualSent(emailLogId);
+  }
+
+  public void updateEmailNotificationsSentFalse(Long emailId){
+    mapper.updateEmailNotificationsSentFalse(emailId);
   }
 }

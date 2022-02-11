@@ -295,6 +295,10 @@ public class RequisitionRepository {
         requisition.setNewRegimes(regimenMapper.getNewVersionRegimes());
         return requisition;
     }
+
+    public Rnr getByIdWhetherExists(Long rnrId){
+        return requisitionMapper.getByIdWhetherExists(rnrId);
+    }
     
     @Deprecated
     public List<Rnr> getAuthorizedRequisitions(RoleAssignment roleAssignment) {

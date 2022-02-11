@@ -526,7 +526,11 @@ public class RequisitionService {
         logStatusChangeAndNotify(requisition, true, null);
         return requisition;
     }
-    
+
+    public Rnr getByIdWhetherExists(Long rnrId){
+        return requisitionRepository.getByIdWhetherExists(rnrId);
+    }
+
     public void logStatusChangeAndNotify(Rnr requisition, boolean notifyStatusChange, String name) {
         requisitionRepository.logStatusChange(requisition, name);
         if (notifyStatusChange) {
@@ -537,6 +541,10 @@ public class RequisitionService {
         // the benefit of the above call is that the email template is being taken from the administrative settings.
         // a call to the following method will do the same thing but takes the message template from the messages.properties file.
         //send RequisitionStatusChangeMail ( requisition );
+    }
+
+    public void emailResentNotify(Rnr requisition){
+        requisitionEventService.notifyForStatusChange(requisition);
     }
     
     private void sendRequisitionStatusChangeMail(Rnr requisition) {

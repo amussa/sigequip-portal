@@ -131,6 +131,50 @@ public class EmailServiceTest {
     verify(mailSender).send(any(MimeMessage.class));
   }
 
+//  @Test
+//  public void shouldNotSendMailsWhenSentCountMoreThan3() {
+//    EmailService service = new EmailService(mailSender, repository, true);
+//
+//    EmailMessage mockEmailMessage1 = mock(EmailMessage.class);
+//    mockEmailMessage1.setId(1L);
+//    mockEmailMessage1.setSentCount(3);
+//    EmailMessage mockEmailMessage2 = mock(EmailMessage.class);
+//    mockEmailMessage2.setSentCount(2);
+//    mockEmailMessage2.setId(2L);
+//    List<EmailMessage> emailMessages = asList(mockEmailMessage1,mockEmailMessage2);
+//    when(mockEmailMessage2.isHtml()).thenReturn(false);
+//    service.processEmails(emailMessages);
+//
+//    verify(mailSender,times(0)).send(mockEmailMessage1);
+//    verify(repository,times(1)).updateEmailSentIsTrueAndSentCount(2L,3);
+//  }
+//
+//  @Test
+//  public void shouldInsertEmailFailSentLogWhenSentMoreThan3Fail() {
+//    EmailService service = new EmailService(mailSender, repository, true);
+//
+//    EmailMessage mockEmailMessage1 = mock(EmailMessage.class);
+//    mockEmailMessage1.setId(1L);
+//    mockEmailMessage1.setSentCount(3);
+//    EmailMessage mockEmailMessage2 = mock(EmailMessage.class);
+//    mockEmailMessage2.setSentCount(2);
+//    mockEmailMessage2.setId(2L);
+//    List<EmailMessage> emailMessages = asList(mockEmailMessage1,mockEmailMessage2);
+//    EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
+//
+//    when(mockEmailMessage2.isHtml()).thenReturn(false);
+//    doThrow(new NullPointerException()).when(mailSender).send(mockEmailMessage2);
+//
+//    try {
+//      // when
+//      service.processEmails(emailMessages);
+//    } catch (Exception e) {
+//      //then
+//      verify(repository,times(1)).updateEmailSentCount(2L,3);
+//      verify(repository,times(1)).insertEmailFailSentLog(any(EmailFailSentLog.class));
+//    }
+//  }
+
   private EmailMessage generateEmailMessage() {
     EmailMessage message = new EmailMessage();
     message.setTo("test@dev.org");
