@@ -13,9 +13,6 @@ package org.openlmis.restapi.controller;
 import com.wordnik.swagger.annotations.Api;
 import java.util.Date;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.Param;
-import org.joda.time.DateTime;
-import org.openlmis.LmisThreadLocalUtils;
 import org.openlmis.core.exception.DataException;
 import org.openlmis.restapi.domain.Report;
 import org.openlmis.restapi.response.RestResponse;
@@ -30,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-import static org.openlmis.LmisThreadLocalUtils.HEADER_LANGUAGE;
 import static org.openlmis.restapi.response.RestResponse.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -84,6 +80,7 @@ public class RestRequisitionController extends BaseController {
     }
 
     if (requisition != null) {
+      restRequisitionService.notifySubmittedEvent(requisition);
       return response(RNR, requisition.getId(), CREATED);
     }
     return response(RNR, 0L, OK);

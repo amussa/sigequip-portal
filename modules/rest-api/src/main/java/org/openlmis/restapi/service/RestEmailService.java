@@ -52,6 +52,9 @@ public class RestEmailService {
   }
 
   private void handleEmailFailSentLog(EmailFailSentLog emailFailSentLog){
+    if(emailFailSentLog == null){
+      return;
+    }
     if(emailFailSentLog.getType() == EmailFailSentType.SENT_FAIL){
       emailService.updateEmailNotificationsSentFalse(emailFailSentLog.getEmailId());
     }else{

@@ -84,19 +84,37 @@ public class RequisitionEmailServiceForSIMAM {
 										});
 
 	public void queueRequisitionEmailWithAttachment(Rnr requisition, List<User> users) {
-
  		if (!requisition.getStatus().equals(RnrStatus.AUTHORIZED)) {
 			return;
 		}
 		if(users == null || users.isEmpty()) {
 			EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
 			emailFailSentLog.setRequisitionId(requisition.getId());
-			emailFailSentLog.setErrorMsg("User is null");
+			emailFailSentLog.setErrorMsg("Supplier is null");
 			emailFailSentLog.setType(EmailFailSentType.SUPPLIER_NULL);
 			emailService.insertEmailFailSentLog(emailFailSentLog);
 			return;
 		}
-		insertEmailMessages(requisition, users);
+		if(verifyUsersEmail(users)) {
+			insertEmailMessages(requisition, users);
+		}else{
+			EmailFailSentLog emailFailSentLog = new EmailFailSentLog();
+			emailFailSentLog.setRequisitionId(requisition.getId());
+			emailFailSentLog.setErrorMsg("Supplier's email is null");
+			emailFailSentLog.setType(EmailFailSentType.SUPPLIER_NULL);
+			emailService.insertEmailFailSentLog(emailFailSentLog);
+		}
+	}
+
+	private boolean verifyUsersEmail(List<User> users){
+		boolean shouldInsertEmail = false;
+		for(User user : users){
+			if (user.getEmail() != null) {
+				shouldInsertEmail = true;
+				break;
+			}
+		}
+		return shouldInsertEmail;
 	}
 
 	private void insertEmailMessages(Rnr requisition, List<User> users) {
