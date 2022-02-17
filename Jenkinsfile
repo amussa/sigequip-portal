@@ -4,8 +4,10 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "50"))
         timestamps ()
     }
+    parameters {
+        string(name: 'DEPLOY_PROD', defaultValue: 'YES')
+    }
     environment {
-        DEPLOY_PROD = "YES"
         EC2_HOST_DEV = "52.69.115.46"
         DB_HOST_DEV = "localhost"
         EC2_HOST_UAT = "54.65.64.11"
