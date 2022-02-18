@@ -105,6 +105,7 @@ public class RestRequisitionControllerTest {
     ResponseEntity<RestResponse> response = controller.submitSDPRequisition(report, principal);
 
     assertThat((Long) response.getBody().getData().get(RNR), is(1L));
+    verify(service).notifySubmittedEvent(requisition);
   }
 
 

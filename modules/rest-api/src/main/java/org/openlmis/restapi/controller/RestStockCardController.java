@@ -106,7 +106,6 @@ public class RestStockCardController extends BaseController {
       } catch (DataException e) {
         errorProductCodes.add(entry.getKey());
         logger.error("facilityId {} productCode {} sync error", facilityId, entry.getKey());
-        stockCardsBackupRequestBodyService.backupRequestBody(facilityId, userId, deviceInfo, versionCode, "DataException: "+Arrays.toString(errorProductCodes.toArray()), requestBody);
       } catch (Exception e) {
         logger.error(e.getMessage());
         stockCardsBackupRequestBodyService.backupRequestBody(facilityId, userId, deviceInfo, versionCode, "OtherException: "+e.getMessage(), requestBody);
@@ -115,6 +114,9 @@ public class RestStockCardController extends BaseController {
         stockCardService.release(facilityId, entry.getKey(), StockCardLockConstants.UPDATE);
         productStockEventMap.put(entry.getKey(), null);
       }
+    }
+    if(!errorProductCodes.isEmpty()){
+      stockCardsBackupRequestBodyService.backupRequestBody(facilityId, userId, deviceInfo, versionCode, "DataException: "+Arrays.toString(errorProductCodes.toArray()), requestBody);
     }
     logger.info("errorProductCodes {}", errorProductCodes);
     return response("errorProductCodes", errorProductCodes);
