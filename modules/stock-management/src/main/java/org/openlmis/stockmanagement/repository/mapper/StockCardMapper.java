@@ -94,7 +94,7 @@ public interface StockCardMapper {
   @Select("SELECT *" +
       " FROM stock_card_entries" +
       " WHERE stockcardid = #{stockCardId}" +
-      " ORDER BY occurred DESC,modifieddate DESC")
+      " ORDER BY occurred DESC,id DESC")
   @Results({
       @Result(property = "id", column = "id"),
       @Result(property = "adjustmentReason", column = "adjustmentType", javaType = StockAdjustmentReason.class,
