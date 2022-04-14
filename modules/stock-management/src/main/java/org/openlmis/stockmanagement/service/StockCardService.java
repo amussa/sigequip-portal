@@ -178,7 +178,9 @@ public class StockCardService {
       }
     }
 
+    Map<String, String> lotCodeToForStockEntry = new HashMap<>();
     for (StockCardEntryLotItem stockCardEntryLotItem : entry.getStockCardEntryLotItems()) {
+      lotCodeToForStockEntry.put(stockCardEntryLotItem.getLot().getLotCode(),"1");
       stockCardEntryLotItem.setStockCardEntryId(entry.getId());
       LotOnHand lotOnHand = lotOnHandMap.get(stockCardEntryLotItem.getLot().getLotCode());
       if (lotOnHand != null) {
@@ -194,7 +196,10 @@ public class StockCardService {
     if (entry.getStockCard().getLotsOnHand() != null) {
       for (LotOnHand lotOnHand : entry.getStockCard().getLotsOnHand()) {
         lotRepository.saveLotOnHand(lotOnHand);
-        repository.insertLotOnHandValuesForStockEntry(lotOnHand, entry);
+        String flag = lotCodeToForStockEntry.get(lotOnHand.getLot().getLotCode());
+        if (flag != null){
+          repository.insertLotOnHandValuesForStockEntry(lotOnHand, entry);
+        }
       }
     }
   }
