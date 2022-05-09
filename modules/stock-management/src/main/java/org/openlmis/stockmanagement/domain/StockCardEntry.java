@@ -20,10 +20,9 @@ import java.util.*;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode(callSuper=false)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class StockCardEntry extends BaseModel {
-
   private static final Set<String> RIGHT_KIT_PRODUCTS_SET = Sets.newHashSet("26A01", "26B01", "26A02", "26B02");
 
   @JsonIgnore
@@ -53,8 +52,7 @@ public class StockCardEntry extends BaseModel {
 
   private static final Logger logger = LoggerFactory.getLogger(StockCardEntry.class);
 
-  public StockCardEntry(StockCard card, StockCardEntryType type, long quantity, Date occurred, String referenceNumber,
-      Long requestedQuantity) {
+  public StockCardEntry(StockCard card, StockCardEntryType type, long quantity, Date occurred, String referenceNumber, Long requestedQuantity) {
     this.stockCard = Objects.requireNonNull(card);
     this.type = Objects.requireNonNull(type);
     this.quantity = Objects.requireNonNull(quantity);
@@ -66,24 +64,16 @@ public class StockCardEntry extends BaseModel {
 
   @JsonIgnore
   public final boolean isValid() {
-    if (null == type) {
-      return false;
-    }
-    if (null == quantity) {
-      return false;
-    }
+    if(null == type) return false;
+    if(null == quantity) return false;
 
     return true;
   }
 
   @JsonIgnore
   public final boolean isValidAdjustment() {
-    if (false == isValid()) {
-      return false;
-    }
-    if (StockCardEntryType.ADJUSTMENT == type && null == adjustmentReason) {
-      return false;
-    }
+    if(false == isValid()) return false;
+    if(StockCardEntryType.ADJUSTMENT == type && null == adjustmentReason) return false;
 
     return true;
   }
@@ -109,11 +99,11 @@ public class StockCardEntry extends BaseModel {
     }
   }
 
-  private String getVersionCode() {
+  private String getVersionCode(){
     return LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE);
   }
 
-  private boolean shouldBlockProcess() {
+  private boolean shouldBlockProcess(){
     String versionCode = LmisThreadLocalUtils.getHeader(LmisThreadLocalUtils.HEADER_VERSION_CODE);
     return StringUtils.isNumeric(versionCode) && Integer.valueOf(versionCode) >= LmisThreadLocalUtils.VERSION_87;
   }
@@ -123,30 +113,16 @@ public class StockCardEntry extends BaseModel {
       logger.error("stock movement quantity error");
       logger.error(
           "stock movement quantity error, facilityId {} version {} productCode {} movement is {} latestMovement is {}",
-          this.getStockCard().getFacility().getId(), this.getVersionCode(), this.getStockCard().getProduct().getCode(),
+          this.getStockCard().getFacility().getId(),this.getVersionCode(),this.getStockCard().getProduct().getCode(),
           JsonUtils.toJsonString(this), JsonUtils.toJsonString(latestStockCardEntry));
       if (shouldBlockProcess()) {
-        throw new DataException("error.stock.entry.quantity");
+          throw new DataException("error.stock.entry.quantity");
       }
     }
   }
 
   private void validOccurredDate(StockCardEntry latestStockCardEntry) {
-    boolean isValid = true;
-    Date latestOccurred = latestStockCardEntry.getOccurred();
-    Date nowOccurred = this.getOccurred();
-    Date latestCreatedDate = latestStockCardEntry.getCreatedDate();
-    Date nowCreatedDate = this.getCreatedDate();
-    if (latestOccurred == null || nowOccurred == null || latestCreatedDate == null || nowCreatedDate == null) {
-      isValid = false;
-    } else if (nowOccurred.after(new Date())) {
-      isValid = false;
-    } else if (latestOccurred.after(nowOccurred)) {
-      isValid = false;
-    } else if (latestOccurred.equals(nowOccurred) && latestCreatedDate.after(nowCreatedDate)) {
-      isValid = false;
-    }
-    if (!isValid) {
+    if (latestStockCardEntry.getOccurred().after(this.getOccurred())) {
       logger.error("stock movement date error");
       logger.error(
           "stock movement date error, facilityId {} version {}  productCode {} movement is {} latestMovement is {}",
@@ -160,19 +136,19 @@ public class StockCardEntry extends BaseModel {
 
   private void validFirstInventory() {
     if (!(this.getAdjustmentReason().getName().equals("INVENTORY")
-        && this.getQuantity() >= 0 && !isHaveSignature())) {
+        && this.getQuantity() >= 0 && !isHaveSignature()) ) {
       logger.error("stock movement first inventory error");
       logger.error(
           "stock movement first inventory error, facilityId {},version {} , productCode: {} movement is {}",
-          this.getStockCard().getFacility().getId(), this.getVersionCode(), this.getStockCard().getProduct().getCode(),
+          this.getStockCard().getFacility().getId(),this.getVersionCode(), this.getStockCard().getProduct().getCode(),
           JsonUtils.toJsonString(this));
       if (shouldBlockProcess()) {
-        throw new DataException("error.stock.entry.first.inventory");
+          throw new DataException("error.stock.entry.first.inventory");
       }
     }
   }
 
-  private boolean isHaveSignature() {
+  private boolean isHaveSignature(){
     for (StockCardEntryKV stockCardEntryKV : extensions) {
       if (stockCardEntryKV.getKey().equals("signature") && stockCardEntryKV.getValue() != null &&
           !stockCardEntryKV.getValue().isEmpty()) {

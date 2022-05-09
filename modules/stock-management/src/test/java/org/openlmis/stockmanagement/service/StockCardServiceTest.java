@@ -1,8 +1,5 @@
 package org.openlmis.stockmanagement.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.TimeZone;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -226,11 +223,8 @@ public class StockCardServiceTest {
     stockCard1.setProduct(make(a(ProductBuilder.defaultProduct, with(ProductBuilder.code, "P1"))));
     stockCard1.setFacility(defaultFacility);
 
-    service.getLotOnHandByLotNumberAndProductCodeAndFacilityId(lot.getLotCode(), stockCard1.getProduct().getCode(),
-        stockCard1.getFacility().getId());
-    verify(lotRepository)
-        .getLotOnHandByLotNumberAndProductCodeAndFacilityId(lot.getLotCode(), stockCard1.getProduct().getCode(),
-            stockCard1.getFacility().getId());
+    service.getLotOnHandByLotNumberAndProductCodeAndFacilityId(lot.getLotCode(), stockCard1.getProduct().getCode(), stockCard1.getFacility().getId());
+    verify(lotRepository).getLotOnHandByLotNumberAndProductCodeAndFacilityId(lot.getLotCode(), stockCard1.getProduct().getCode(), stockCard1.getFacility().getId());
   }
 
   @Test
@@ -239,8 +233,7 @@ public class StockCardServiceTest {
     stockCard.setFacility(defaultFacility);
     stockCard.setProduct(defaultProduct);
     stockCard.setTotalQuantityOnHand(100L);
-    StockCardEntry stockCardEntry = new StockCardEntry(stockCard, StockCardEntryType.ADJUSTMENT, 100L, new Date(), "",
-        0L);
+    StockCardEntry stockCardEntry = new StockCardEntry(stockCard, StockCardEntryType.ADJUSTMENT, 100L, new Date(), "", 0L);
     StockAdjustmentReason stockAdjustmentReason = new StockAdjustmentReason();
     stockAdjustmentReason.setName("INVENTORY");
     stockCardEntry.setAdjustmentReason(stockAdjustmentReason);
@@ -264,9 +257,9 @@ public class StockCardServiceTest {
     lotOnHand2.setStockCard(stockCard);
 
     StockCardEntryLotItem stockCardEntryLotItem1 = new StockCardEntryLotItem(lot, 10L);
-    stockCardEntryLotItem1.addKeyValue("soh", "110");
+    stockCardEntryLotItem1.addKeyValue("soh","110");
     StockCardEntryLotItem stockCardEntryLotItem2 = new StockCardEntryLotItem(lot2, 100L);
-    stockCardEntryLotItem2.addKeyValue("soh", "100");
+    stockCardEntryLotItem2.addKeyValue("soh","100");
 
     stockCard.setLotsOnHand(asList(lotOnHand, lotOnHand2));
     stockCardEntry.setStockCardEntryLotItems(asList(stockCardEntryLotItem1, stockCardEntryLotItem2));
@@ -276,8 +269,7 @@ public class StockCardServiceTest {
     verify(lotRepository).createStockCardEntryLotItem(stockCardEntryLotItem1);
     verify(lotRepository).createStockCardEntryLotItem(stockCardEntryLotItem2);
 
-    verify(repository, times(2)).insertLotOnHandValuesForStockEntry(org.mockito.Matchers.any(LotOnHand.class),
-        org.mockito.Matchers.any(StockCardEntry.class));
+    verify(repository, times(2)).insertLotOnHandValuesForStockEntry(org.mockito.Matchers.any(LotOnHand.class), org.mockito.Matchers.any(StockCardEntry.class));
 
     ArgumentCaptor<LotOnHand> lotOnHandArgumentCaptor = ArgumentCaptor.forClass(LotOnHand.class);
     verify(lotRepository, times(2)).saveLotOnHand(lotOnHandArgumentCaptor.capture());
@@ -318,7 +310,16 @@ public class StockCardServiceTest {
 
   @Test
   public void shouldThrowExceptionIfNotFirstInventory() {
-    StockCardEntry stockCardEntry = createAdjustmentStockCardEntry(new Date());
+    StockCard stockCard = new StockCard();
+    stockCard.setFacility(defaultFacility);
+    stockCard.setProduct(defaultProduct);
+    stockCard.setTotalQuantityOnHand(100L);
+    StockCardEntry stockCardEntry = new StockCardEntry(stockCard, StockCardEntryType.ADJUSTMENT, 100L, new Date(), "", 0L);
+    StockAdjustmentReason stockAdjustmentReason = new StockAdjustmentReason();
+    stockAdjustmentReason.setName("INVENTORY");
+    stockCardEntry.setAdjustmentReason(stockAdjustmentReason);
+
+    stockCardEntry.addKeyValue("soh", "210");
     stockCardEntry.addKeyValue("signature", "yyds");
 
     expectedException.expect(DataException.class);
@@ -326,91 +327,4 @@ public class StockCardServiceTest {
 
     service.addStockCardEntry(stockCardEntry);
   }
-
-  @Test
-  public void shouldThrowExceptionIfOccuredAfterNow() {
-    Date now = new Date();
-    StockCardEntry stockCardEntry = createAdjustmentStockCardEntry(now);
-    Date occurred = addHourForNow(1);
-    stockCardEntry.setOccurred(occurred);
-
-    StockCardEntry latestStockCardEntry = createAdjustmentStockCardEntry(now);
-    Date latestOccurred = addHourForNow(-1);
-    latestStockCardEntry.setOccurred(latestOccurred);
-
-    stockCardEntry.getStockCard().setLastestStockCardEntry(latestStockCardEntry);
-
-    expectedException.expect(DataException.class);
-    expectedException.expectMessage("error.stock.entry.date.validation");
-
-    service.addStockCardEntry(stockCardEntry);
-  }
-
-  @Test
-  public void shouldThrowExceptionIfOccuredBeforeLatest() {
-    Date now = new Date();
-    StockCardEntry stockCardEntry = createAdjustmentStockCardEntry(now);
-    Date occurred = addHourForNow(-2);
-    stockCardEntry.setOccurred(occurred);
-
-    StockCardEntry latestStockCardEntry = createAdjustmentStockCardEntry(now);
-    Date latestOccurred = addHourForNow(-1);
-    latestStockCardEntry.setOccurred(latestOccurred);
-
-    stockCardEntry.getStockCard().setLastestStockCardEntry(latestStockCardEntry);
-
-    expectedException.expect(DataException.class);
-    expectedException.expectMessage("error.stock.entry.date.validation");
-
-    service.addStockCardEntry(stockCardEntry);
-  }
-
-  @Test
-  public void shouldThrowExceptionIfOccuredEqualAndCreateDateDiscontinuous() {
-    Date now = new Date();
-    StockCardEntry stockCardEntry = createAdjustmentStockCardEntry(now);
-    Date nowCreatedDate = addHourForNow(-2);
-    stockCardEntry.setCreatedDate(nowCreatedDate);
-
-    StockCardEntry latestStockCardEntry = createAdjustmentStockCardEntry(now);
-    Date latestCreatedDate = addHourForNow(-1);
-    latestStockCardEntry.setCreatedDate(latestCreatedDate);
-
-    stockCardEntry.getStockCard().setLastestStockCardEntry(latestStockCardEntry);
-
-    expectedException.expect(DataException.class);
-    expectedException.expectMessage("error.stock.entry.date.validation");
-
-    service.addStockCardEntry(stockCardEntry);
-  }
-
-  private StockCardEntry createAdjustmentStockCardEntry(Date now) {
-    StockCard stockCard = new StockCard();
-    stockCard.setFacility(defaultFacility);
-    stockCard.setProduct(defaultProduct);
-    stockCard.setTotalQuantityOnHand(100L);
-    StockCardEntry stockCardEntry = new StockCardEntry(stockCard, StockCardEntryType.ADJUSTMENT, 100L, now, "",
-        0L);
-    StockAdjustmentReason stockAdjustmentReason = new StockAdjustmentReason();
-    stockAdjustmentReason.setName("INVENTORY");
-    stockCardEntry.setAdjustmentReason(stockAdjustmentReason);
-
-    stockCardEntry.addKeyValue("soh", "100");
-    return stockCardEntry;
-  }
-
-  /**
-   * 获取某天的时间,支持自定义时间格式
-   * @param index            为正表示当前时间加小时，为负表示当前时间减小时
-   * @return String
-   */
-  public static Date addHourForNow(int index) {
-    TimeZone tz = TimeZone.getTimeZone("Asia/Shanghai");
-    TimeZone.setDefault(tz);
-    Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.HOUR_OF_DAY, index);
-    return calendar.getTime();
-  }
 }
-
-
