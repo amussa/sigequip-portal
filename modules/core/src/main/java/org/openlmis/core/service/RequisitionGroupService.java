@@ -104,6 +104,7 @@ public class RequisitionGroupService {
     return requisitionGroupMemberService.getMembersBy(requisitionGroupId);
   }
 
+  @Transactional
   public void updateWithMembersAndSchedules(RequisitionGroup requisitionGroup,
                                             List<RequisitionGroupMember> requisitionGroupMembers,
                                             List<RequisitionGroupProgramSchedule> requisitionGroupProgramSchedules,
