@@ -360,10 +360,10 @@ function BaseProductReportController($scope, $filter, ProductReportService, $cac
   };
 
   $scope.pickMVs = function(period) {
-    if (period.periodStart.getTime()  >= new Date("2022/01/21").getTime()){
-      return 'vw_period_movements_after_20220121';
+    if (period.periodStart.getTime()  >= new Date("2022/06/21").getTime()){
+      return 'vw_period_movements_after_20220621';
     }else {
-      return 'vw_period_movements_before_20220121';
+      return 'vw_period_movements_before_20220621';
     }
   };
 
