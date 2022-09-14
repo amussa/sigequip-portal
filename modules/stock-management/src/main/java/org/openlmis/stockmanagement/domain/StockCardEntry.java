@@ -12,6 +12,7 @@ import org.openlmis.LmisThreadLocalUtils;
 import org.openlmis.core.domain.BaseModel;
 import org.openlmis.core.domain.StockAdjustmentReason;
 import org.openlmis.core.exception.DataException;
+import org.openlmis.core.utils.DateUtil;
 import org.openlmis.stockmanagement.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,7 +123,8 @@ public class StockCardEntry extends BaseModel {
   }
 
   private void validOccurredDate(StockCardEntry latestStockCardEntry) {
-    if (latestStockCardEntry.getOccurred().after(this.getOccurred())) {
+    if (latestStockCardEntry.getOccurred().after(this.getOccurred())
+        || this.getOccurred().after(new Date())) {
       logger.error("stock movement date error");
       logger.error(
           "stock movement date error, facilityId {} version {}  productCode {} movement is {} latestMovement is {}",
