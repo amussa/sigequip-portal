@@ -8,9 +8,7 @@ pipeline {
         string(name: 'DEPLOY_PROD', defaultValue: 'YES')
     }
     environment {
-        EC2_HOST_DEV = "52.69.115.46"
-        DB_HOST_DEV = "localhost"
-        EC2_HOST_UAT = "54.65.64.11"
+        EC2_HOST_UAT = "172.31.23.36"
         DB_HOST_UAT = "localhost"
         EC2_HOST_PRODUCTION_WEB1 = "172.31.13.52"
         EC2_HOST_PRODUCTION_WEB2 = "172.31.12.55"
@@ -30,6 +28,17 @@ pipeline {
                 '''
             }
         }
+        stage("Replace springSecurityContext for UAT") {
+            when {
+                branch "master"
+            }
+            steps {
+                sh '''
+                     sed -i 's#springSecurityContext.xml#springSecurityContext-uat.xml#g' ./modules/openlmis-web/src/main/resources/applicationContext.xml
+                     sed -i 's#springSecurityContext.xml#springSecurityContext-uat.xml#g' ./modules/openlmis-web/src/main/resources/applicationContext-slave.xml
+                '''
+            }
+        }
         stage("Build war") {
             tools {
                jdk "jdk-1.7"
@@ -42,18 +51,9 @@ pipeline {
                 '''
             }
         }
-        stage("Deploy To Dev") {
-            when {
-                branch "master"
-            }
-            steps {
-                runFlyway("${EC2_HOST_DEV}", "${DB_HOST_DEV}")
-                deploy("${EC2_HOST_DEV}")
-            }
-        }
         stage("Deploy To UAT") {
             when {
-                branch "release"
+                branch "master"
             }
             steps {
                 runFlyway("${EC2_HOST_UAT}", "${DB_HOST_UAT}")
@@ -99,12 +99,11 @@ pipeline {
 def runFlyway(ec2_host, db_host) {
     withEnv(["EC2_HOST=${ec2_host}", "DB_HOST=${db_host}"]) {
         withCredentials([usernamePassword(credentialsId: "db-info", usernameVariable: "USER", passwordVariable: "PASS")]) {
-            sshagent(["uat-ssh-key"]) {
-                sh '''
-                    echo "run flyway"
-                    scp modules/db/build/libs/db.jar ubuntu@${EC2_HOST}:~/artifacts/
-                    scp modules/migration/build/libs/migration.jar ubuntu@${EC2_HOST}:~/artifacts/
-                    ssh -tt -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << EOF
+            sh '''
+                echo "run flyway"
+                scp modules/db/build/libs/db.jar ubuntu@${EC2_HOST}:~/artifacts/
+                scp modules/migration/build/libs/migration.jar ubuntu@${EC2_HOST}:~/artifacts/
+                ssh -tt -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << EOF
 echo "backup db.jar, migration.jar"
 sudo mv /app/tomcat/openlmis/db/db.jar /app/tomcat/openlmis/artifact_last/
 sudo mv /app/tomcat/openlmis/db/migration.jar /app/tomcat/openlmis/artifact_last/
@@ -120,19 +119,17 @@ sudo unzip -q /app/tomcat/openlmis/db/migration.jar -d /opt/flyway-commandline/s
 sudo /opt/flyway-commandline/flyway -url=jdbc:postgresql://${DB_HOST}:5432/open_lmis -schemas=public,atomfeed -user=${USER} -password=${PASS} -table=schema_version -placeholderReplacement=false -locations=filesystem:/opt/flyway-commandline/sql/db -X migrate
 sudo /opt/flyway-commandline/flyway -url=jdbc:postgresql://${DB_HOST}:5432/open_lmis -schemas=public,atomfeed -user=${USER} -password=${PASS} -table=migration_schema_version -placeholderReplacement=false -baselineOnMigrate=true -locations=filesystem:/opt/flyway-commandline/sql/migration -X migrate
 exit
-                EOF'''
-            }
+            EOF'''
         }
     }
 }
 
 def deploy(ec2_host) {
     withEnv(["EC2_HOST=${ec2_host}"]) {
-        sshagent(["uat-ssh-key"]) {
-            sh '''
-                echo "deploy service"
-                scp modules/openlmis-web/build/libs/openlmis-web.war ubuntu@${EC2_HOST}:~/artifacts/
-                ssh -tt -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << EOF
+        sh '''
+            echo "deploy service"
+            scp modules/openlmis-web/build/libs/openlmis-web.war ubuntu@${EC2_HOST}:~/artifacts/
+            ssh -tt -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << EOF
 echo "stop tomcat"
 sudo service tomcat stop
 sleep 5
@@ -149,7 +146,6 @@ sudo service tomcat start
 sleep 5
 ps -ef | grep java
 exit
-            EOF'''
-        }
+        EOF'''
     }
 }
