@@ -102,7 +102,7 @@ function ViewRnrMmiaController($scope, $route, Requisitions, messageService, dow
     $scope.loadMmiaDetail = function () {
         Requisitions.get({ id: $route.current.params.rnr, operation: "skipped" }, function (data) {
             $scope.rnr = data.rnr;
-            $scope.year = data.rnr.period.stringYear;
+            $scope.year = data.rnr.period.stringEndDate.substr(6, 4);
             $scope.newProducts = data.rnr.newProducts;
             $scope.newRegimes = data.rnr.newRegimes;
             $scope.isBetweenWebUpgradeAndMobileUpgrade = data.rnr.patientQuantifications.length === 7 ? data.rnr.clientSubmittedTime > (new Date("2021-01-20")).getTime() /*Release date*/ : false;
