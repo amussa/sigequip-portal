@@ -8,6 +8,10 @@
  * You should have received a copy of the GNU Affero General Public License along with this program.  If not, see http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
  */
 
+apply plugin: 'cobertura'
+apply plugin: 'idea'
+apply plugin: 'java'
+
 import groovy.sql.Sql
 
 configurations {
@@ -94,7 +98,7 @@ def boolean closeActiveConnections(String pid) {
 }
 
 jar.doFirst {
-    tasks.migrateDB.execute()
+    // tasks.migrateDB.execute()
 }
 
 task migrateDB() << {
@@ -119,6 +123,18 @@ task seed(type: Exec) {
     commandLine 'psql', '-U', dbUser, '--file', 'src/main/resources/seed/seed.sql', '-h', databaseHostName, '-w', dbName
 }
 
+//task seed(type: Exec) {
+//    environment "PATH", System.env.PATH + ":/Applications/Postgres.app/Contents/Versions/13/bin"
+//    def stdout = new ByteArrayOutputStream()
+//    exec {
+//        commandLine 'sh', '-c', 'echo $PATH'
+//        standardOutput = stdout
+//    }
+//    println "O PATH é: ${stdout.toString()}"
+//    environment("PGPASSWORD", dbPassword)
+//    commandLine '/Applications/Postgres.app/Contents/Versions/13/bin/psql', '-U', dbUser, '--file', 'src/main/resources/seed/seed.sql', '-h', databaseHostName, '-w', dbName
+//}
+
 def executeSql(String statement, Boolean includeDbName = false) {
     def connectionString = "jdbc:postgresql://$databaseHostName:$databasePort"
 
@@ -135,3 +151,7 @@ def executeSql(String statement, Boolean includeDbName = false) {
     Sql.newInstance(connectionString, dbUser, dbPassword, dbDriver).execute(statement)
 }
 
+cobertura {
+    coverageFormats << 'xml'
+    coverageIgnoreTrivial = true
+}

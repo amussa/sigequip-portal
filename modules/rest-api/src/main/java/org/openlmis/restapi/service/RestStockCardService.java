@@ -216,6 +216,7 @@ public class RestStockCardService {
     }
 
     private boolean validAdjustmentReason(StockEvent stockEvent) {
+        LOG.info("reason: " + stockEvent.getReasonName());
         return stockAdjustmentReasonRepository.getAdjustmentReasonByName(stockEvent.getReasonName()) != null;
     }
 

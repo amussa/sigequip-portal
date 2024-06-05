@@ -23,6 +23,18 @@
     </layout>
   </appender>
 
+  <appender name="integrationFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="${logHome}/openlmis-ftp.log"/>
+    <param name="MaxFileSize" value="1MB"/>
+    <param name="MaxBackupIndex" value="5"/>
+    <param name="Append" value="true"/>
+    <param name="Threshold" value="INFO"/>
+    <param name="Encoding" value="UTF-8"/>
+    <layout class="org.apache.log4j.EnhancedPatternLayout">
+      <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%40.40c] - %m%n"/>
+    </layout>
+  </appender>
+
   <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
     <param name="Append" value="true"/>
     <param name="Encoding" value="UTF-8"/>
@@ -72,13 +84,13 @@
     <appender-ref ref="syncActivityLogFileAppender"/>
   </logger>
 
-  <logger name="org.springframework.integration">
+  <logger name="org.springframework.integration"  additivity="false" >
     <level value="INFO"/>
-    <appender-ref ref="logFileAppender"/>
+    <appender-ref ref="integrationFileAppender"/>
   </logger>
 
   <logger name="org.springframework">
-    <level value="ERROR"/>
+    <level value="INFO"/>
     <appender-ref ref="logFileAppender"/>
   </logger>
 

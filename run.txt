@@ -1,0 +1,25 @@
+# build and run
+./gradlew clean build run -x test -DlogHome='/tmp' --stacktrace
+
+# stop gradle
+./gradlew --stop
+
+# recreate database, build and run
+# be careful, It will clean your database data
+./gradlew clean setupdb setupExtensions seed build run -x test -DlogHome='/tmp' --stacktrace
+  - `setupdb` is to recreate the database and schema.(**Be careful, It will clean your database data**)
+  - `setupExtensions` is to apply the database schema extensions added.
+  - `seed` is to seed in the reference data.
+  - `build` is to build the app.
+  - `run` is to start the embedded jetty server.
+
+# senha de Admin123: 'Admin123'
+UPDATE users set password='TQskzK3iiLfbRVHeM1muvBCiiKriibfl6lh8ipo91hb74G3OvsybvkzpPI4S3KIeWTXAiiwlUU0iiSxWii4wSuS8mokSAieie'
+where username = 'Admin123';
+
+# test1234
+K74MSLkafRuKZ1Ooucvh2xa4Q3nzipRishFWIShN96SPHNcemipuQ6mFMe9kkJQqp5EaoZnJeaFpl310TmlzRgNyQieie
+
+# user/pass
+Admin123 / Admin123
+CA_Testes / test1234
