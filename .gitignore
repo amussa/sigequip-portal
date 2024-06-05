@@ -29,3 +29,4 @@ package-lock.json
 *.swp
 *.swo
 docker/test-runner-portal/installers/*
+nohup.out

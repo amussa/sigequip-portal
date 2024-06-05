@@ -13,7 +13,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   <appender name="logFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File" value="${logHome}/openlmis-web.log"/>
+    <param name="File" value="${logHome}/sigequip-web.log"/>
     <param name="MaxFileSize" value="1MB"/>
     <param name="MaxBackupIndex" value="5"/>
     <param name="Append" value="true"/>
@@ -24,7 +24,7 @@
   </appender>
 
   <appender name="integrationFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File" value="${logHome}/openlmis-ftp.log"/>
+    <param name="File" value="${logHome}/sigequip-ftp.log"/>
     <param name="MaxFileSize" value="1MB"/>
     <param name="MaxBackupIndex" value="5"/>
     <param name="Append" value="true"/>
@@ -95,7 +95,7 @@
   </logger>
 
 <appender name="syncActivityLogFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File" value="${logHome}/sync-activity.log"/>
+    <param name="File" value="${logHome}/sigequip-sync-activity.log"/>
     <param name="MaxFileSize" value="10MB"/>
     <param name="MaxBackupIndex" value="5"/>
     <param name="Append" value="true"/>
