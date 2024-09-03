@@ -1,3 +1,13 @@
+SELECT delete_product_and_dependencies('01A02');
+SELECT delete_product_and_dependencies('01A03');
+SELECT delete_product_and_dependencies('01A03Z');
+SELECT delete_product_and_dependencies('01A04');
+SELECT delete_product_and_dependencies('01A04Z');
+SELECT delete_product_and_dependencies('01A05');
+SELECT delete_product_and_dependencies('01A0ZZ');
+SELECT delete_product_and_dependencies('01B01');
+SELECT delete_product_and_dependencies('01B02');
+SELECT delete_product_and_dependencies('02A01');
 SELECT delete_product_and_dependencies('01B03');
 SELECT delete_product_and_dependencies('01B04');
 SELECT delete_product_and_dependencies('01B05');

@@ -26,9 +26,11 @@ buildscript {
     }
     dependencies {
         classpath "net.saliman:gradle-cobertura-plugin:2.2.7"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
+        // classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
+        classpath files('libs/gradle-versions-plugin-0.8.jar')
         classpath "net.saliman:gradle-properties-plugin:1.4.2"
-        classpath 'com.palantir:jacoco-coverage:0.4.0'
+        // classpath 'com.palantir:jacoco-coverage:0.4.0'
+        classpath files('libs/jacoco-coverage-0.4.0.jar')
     }
 }
 
