@@ -1,3 +1,4 @@
+SELECT delete_product_and_dependencies('01A01');
 SELECT delete_product_and_dependencies('01A02');
 SELECT delete_product_and_dependencies('01A03');
 SELECT delete_product_and_dependencies('01A03Z');
