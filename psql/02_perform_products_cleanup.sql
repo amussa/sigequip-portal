@@ -1446,5 +1446,4 @@ SELECT delete_product_and_dependencies('11A23Z');
 SELECT delete_product_and_dependencies('08S01ZWi');
 SELECT delete_product_and_dependencies('08S30ZX');
 SELECT delete_product_and_dependencies('24J012');
-
-
+SELECT delete_product_and_dependencies('11A23Y');

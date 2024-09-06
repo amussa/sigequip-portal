@@ -1,3 +1,6 @@
+
+
+-- Reactivar os triggers em todas as tabelas
 DO $$
 DECLARE
 r RECORD;
@@ -12,3 +15,20 @@ WHERE schemaname = 'public'
 RAISE NOTICE 'Triggers ativados para a tabela: %', r.tablename;
 END LOOP;
 END $$;
+
+
+
+-- verificar estado triggers
+SELECT
+    tgname AS trigger_name,
+    tgrelid::regclass AS table_name,
+        CASE
+            WHEN tgenabled = 'D' THEN 'DISABLED'
+            ELSE 'ENABLED'
+            END AS trigger_state
+FROM
+    pg_trigger
+WHERE
+        tgenabled = 'D'
+ORDER BY
+    tgrelid::regclass, tgname;

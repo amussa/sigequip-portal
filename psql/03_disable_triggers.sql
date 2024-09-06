@@ -1,5 +1,5 @@
 
--- Para desativar os triggers em todas as tabelas
+-- Desativar os triggers em todas as tabelas
 DO $$
 DECLARE
 r RECORD;
@@ -15,7 +15,7 @@ RAISE NOTICE 'Triggers desativados para a tabela: %', r.tablename;
 END LOOP;
 END $$;
 
--- Para verificar se os triggers estão desativados:
+-- verificar estado triggers
 SELECT
     tgname AS trigger_name,
     tgrelid::regclass AS table_name,
