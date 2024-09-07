@@ -81,9 +81,13 @@ public class SimpleTableService {
         StockProductDto stockProduct;
         for (Map.Entry<String, StockProductDto> entry : stockProductDtoMap.entrySet()) {
             stockProduct = entry.getValue();
-            stockProduct.setSumStockOnHand(sohMap.get(getEntryMapKey(stockProduct.getProductCode(), stockProduct.getFacilityId().toString())));
-            // XXX: forca o produto a aparecer no relatório de produtos
-            stockProduct.setSumStockOnHand(1);
+            Integer sohValue = sohMap.get(getEntryMapKey(stockProduct.getProductCode(), stockProduct.getFacilityId().toString()));
+            if (sohValue != null) {
+                stockProduct.setSumStockOnHand(sohValue);
+            } else {
+                // XXX: forca o produto a aparecer no relatório de produtos
+                stockProduct.setSumStockOnHand(1);
+            }
             stockProduct = calcCmmAndSoh(stockProduct, cmmEntryMap, filterCriteria);
             if (null != stockProduct) {
                 stockProducts.add(stockProduct);
